@@ -65,10 +65,10 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// use math to figure out the row and column that was clicked.
-		System.out.println("x = " + e.getX());
-		System.out.println("y = " + e.getY());
-		
+		int r = Math.max(Math.min((e.getY()-OFFSET)/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
+		int c = Math.max(Math.min((e.getX()-OFFSET)/SQUARE_WIDTH, 7), 0);
+		System.out.println("r = " + r);
+		System.out.println("c = " + c);
 		this.repaint();
 	}
 
