@@ -1,7 +1,15 @@
 
+// Class: Location
+// Written by: Mr Swop
+// Date: Dec 20, 2017
+// Description: A location has a row and a column
+
+//Modified 12/20/17
+//Author: Ethan Frank
+//Description: Make instance fields private
 public class Location {
-	public int row;
-	public int column;
+	private int row;
+	private int column;
 
 	public Location(){
 		this(0,0);
