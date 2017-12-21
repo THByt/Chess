@@ -3,15 +3,16 @@
 // Date: 10/28/15
 // Description: This class implements a Piece.  This Piece will be drawn onto a graphics panel. 
 
-//Modified 12/20/17 by Ethan Frank
-//Description
+//Modified 12/21/17 by Ethan Frank
+//make Piece abstract and getValidMove to. 
+
 import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-public class Piece {
+public abstract class Piece {
 	private ImageIcon image;			// The ImageIcon will be used to hold the Character's png.
 	
 	private int player;					// This int will represent which team the piece is, 1 for yellow team, 
@@ -58,9 +59,7 @@ public class Piece {
 	// @param - Location to - the location that the piece will be moved to
 	// @param - Piece[][]b - the chess board.  a two dimensional array of pieces.
 	// return - boolean - true if the move is valid 
-	public boolean isValidMove(Location from, Location to, Piece[][]b){
-		return false;
-	}
+	public abstract boolean isValidMove(Location from, Location to, Piece[][]b);
 	
 	// method: draw
 	// description: This method is used to draw the image onto the GraphicsPanel.  You shouldn't need to 
@@ -69,7 +68,7 @@ public class Piece {
 	//			   Component c - this is the component that the image will be drawn onto.
 	//			   Location l - a Location that determines where to draw the piece.
 	public void draw(Graphics g, Component c, Location l) {
-        image.paintIcon(c, g, l.getColumn()*75, l.getRow()*90); // you'll need to update the last two parameters so that it will 
+        image.paintIcon(c, g, l.getColumn()*90, l.getRow()*90); // you'll need to update the last two parameters so that it will 
         											  // correctly draw the piece in the right location.
     }
 
@@ -79,5 +78,9 @@ public class Piece {
 
 	public void setPlayer(int player) {
 		this.player = player;
+	}
+	
+	public static Piece getPieceAtLocation(Location l, Piece[][] b){
+		return b[l.getRow()][l.getColumn()];
 	}
 }

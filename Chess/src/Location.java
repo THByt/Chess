@@ -35,4 +35,9 @@ public class Location {
 	public void setColumn(int c){
 		column = c;
 	}
+	
+	public boolean equals(Object o){
+		Location l = (Location) o;
+		return row==l.getRow() && column==l.getColumn();
+	}
 }
