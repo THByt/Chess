@@ -13,8 +13,7 @@ public class Rook extends Piece{
 	//Rooks can only move left/right or up/down. Then can not jump over pieces. 
 	@Override
 	public boolean isValidMove(Location from, Location to, Piece[][] b) {
-		boolean canMoveThere = (from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0) && !to.equals(from);
-		if(!canMoveThere) return false; //can't move there
+		if(!(from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0) && !to.equals(from)) return false; //can't move there
 		
 		int x_way = (int) Math.signum(to.getColumn()-from.getColumn()); //which direction to go in the x direction to get from here to there
 		int y_way = (int) Math.signum(to.getRow()-from.getRow());		//which direction to go in the y direction
