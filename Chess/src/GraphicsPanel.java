@@ -31,7 +31,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private int player;						//current player (1 or 2)
 	
 	public GraphicsPanel(){
-		setPreferredSize(new Dimension(SQUARE_WIDTH*8+OFFSET+2,SQUARE_WIDTH*8+OFFSET+2));
+		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 		board[3][6] = new Rook(2);
 		board[1][6] = new Bishop(2);
@@ -54,22 +54,22 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		
 		// Draw the board
 		g2.setColor(Color.gray);
-		g2.drawLine(SQUARE_WIDTH*8+OFFSET, OFFSET, SQUARE_WIDTH*8+OFFSET, SQUARE_WIDTH*8+OFFSET);
-		g2.drawLine(OFFSET, SQUARE_WIDTH*8+OFFSET, SQUARE_WIDTH*8+OFFSET, SQUARE_WIDTH*8+OFFSET);
-		g2.drawLine(OFFSET, OFFSET, SQUARE_WIDTH*8+OFFSET, 0+OFFSET);
-		g2.drawLine(OFFSET, OFFSET, OFFSET, SQUARE_WIDTH*8+OFFSET);
+		g2.drawLine(SQUARE_WIDTH*8, 0, SQUARE_WIDTH*8, SQUARE_WIDTH*8);
+		g2.drawLine(0, SQUARE_WIDTH*8, SQUARE_WIDTH*8, SQUARE_WIDTH*8);
+		g2.drawLine(0, 0, SQUARE_WIDTH*8, 0);
+		g2.drawLine(0, 0, 0, SQUARE_WIDTH*8);
 		
 		for(int c = 0; c <8; c+=2){
 			for (int r = 0; r<8; r+=2){
 				g2.setColor(Color.gray);
-				g2.fillRect(c*SQUARE_WIDTH+OFFSET,r*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
+				g2.fillRect(c*SQUARE_WIDTH,r*SQUARE_WIDTH,SQUARE_WIDTH,SQUARE_WIDTH);
 			}
 		}
 		
 		for(int c = 1; c<8; c+=2){
 			for (int r = 1; r<8; r+=2){
 				g2.setColor(Color.gray);
-				g2.fillRect(c*SQUARE_WIDTH+OFFSET,r*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
+				g2.fillRect(c*SQUARE_WIDTH,r*SQUARE_WIDTH,SQUARE_WIDTH,SQUARE_WIDTH);
 			}
 		}
 		
@@ -80,7 +80,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					to = new Location(r,c);
 					if(p!=null && p.isValidMove(from, to, board)){
 						g2.setColor(new Color(100,255,100));
-						g2.fillOval(c*SQUARE_WIDTH+OFFSET+10,r*SQUARE_WIDTH+OFFSET+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
+						g2.fillOval(c*SQUARE_WIDTH+10,r*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
 					}
 				}
 			}
@@ -100,8 +100,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int r = Math.max(Math.min((e.getY()-OFFSET)/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
-		int c = Math.max(Math.min((e.getX()-OFFSET)/SQUARE_WIDTH, 7), 0);
+		int r = Math.max(Math.min((e.getY()-0)/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
+		int c = Math.max(Math.min((e.getX()-0)/SQUARE_WIDTH, 7), 0);
 		selected = true; //TODO make this function properly
 		from = new Location(r,c);
 		this.repaint();

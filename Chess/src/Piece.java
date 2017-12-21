@@ -7,6 +7,9 @@
 //make Piece abstract and getValidMove to. 
 // make player protected not private so subclasses can check if they can capture a piece
 
+//Modified 12/21 by Isaac Hu
+//Fix comments
+
 import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
@@ -34,9 +37,9 @@ public abstract class Piece {
 		this.setPlayer(player);			
 	}
 	
-	// method: Character's packed constructor
-	// description: Initialize a new Character object.
-	// parameters: int player - should be either 1 or 2. 1 for yellow team, 2 for black team.
+	// method: Piece's packed constructor
+	// description: Initialize a new Piece object.
+	// parameters: int player - should be either 1 or 2. 1 for white team, 2 for black team.
 	public Piece(int player, String imagePath){
 		setImageIcon(imagePath);
 		this.player = player;			
@@ -69,7 +72,7 @@ public abstract class Piece {
 	//			   Component c - this is the component that the image will be drawn onto.
 	//			   Location l - a Location that determines where to draw the piece.
 	public void draw(Graphics g, Component c, Location l) {
-        image.paintIcon(c, g, l.getColumn()*90, l.getRow()*90); // you'll need to update the last two parameters so that it will 
+        image.paintIcon(c, g, l.getColumn()*90 + 45 - (image.getIconWidth()/2), l.getRow()*90 + 45 -( image.getIconHeight()/2)); // you'll need to update the last two parameters so that it will 
         											  // correctly draw the piece in the right location.
     }
 
