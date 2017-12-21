@@ -9,6 +9,7 @@
 // make selected true when mouse is clicked
 // create valid move viewer
 // draw all pieces in array
+// add current player variable	
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -27,14 +28,18 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private boolean selected;   			// false until the game has started by somebody clicking on the board.  should also be set to false
 	                         				// after an attempted move.
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
+	private int player;						//current player (1 or 2)
 	
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+OFFSET+2,SQUARE_WIDTH*8+OFFSET+2));
-		board = new Piece[8][8];
-		board[3][4] = new Rook(2);
-		board[7][0] = new Rook(1);
-		board[2][4] = new Bishop(2);
-		board[5][7] = new King(1);
+		board = new Piece[8][8];	//Initialize board
+		board[3][6] = new Rook(2);
+		board[1][6] = new Bishop(2);
+		board[7][6] = new King(1);
+		board[3][1] = new King(2);
+		board[3][2] = new King(1);
+		board[6][4] = new King(1);
+		player = 1;
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
@@ -97,8 +102,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		int r = Math.max(Math.min((e.getY()-OFFSET)/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
 		int c = Math.max(Math.min((e.getX()-OFFSET)/SQUARE_WIDTH, 7), 0);
-		System.out.println("r = " + r);
-		System.out.println("c = " + c);
 		selected = true; //TODO make this function properly
 		from = new Location(r,c);
 		this.repaint();

@@ -5,6 +5,7 @@
 
 //Modified 12/21/17 by Ethan Frank
 //make Piece abstract and getValidMove to. 
+// make player protected not private so subclasses can check if they can capture a piece
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -15,7 +16,7 @@ import javax.swing.ImageIcon;
 public abstract class Piece {
 	private ImageIcon image;			// The ImageIcon will be used to hold the Character's png.
 	
-	private int player;					// This int will represent which team the piece is, 1 for yellow team, 
+	protected int player;					// This int will represent which team the piece is, 1 for yellow team, 
 									    // 2 for black team. 
 	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
