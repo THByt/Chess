@@ -10,6 +10,7 @@
 // create valid move viewer
 // draw all pieces in array
 // add current player variable	
+// implement moving pieces 
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -28,7 +29,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private boolean selected;   			// false until the game has started by somebody clicking on the board.  should also be set to false
 	                         				// after an attempted move.
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
-	private int player;						//current player (1 or 2)
+	private int player;						// current player (1 or 2)
 	
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+OFFSET+2,SQUARE_WIDTH*8+OFFSET+2));
@@ -102,8 +103,20 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		int r = Math.max(Math.min((e.getY()-OFFSET)/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
 		int c = Math.max(Math.min((e.getX()-OFFSET)/SQUARE_WIDTH, 7), 0);
-		selected = true; //TODO make this function properly
-		from = new Location(r,c);
+		
+		if(!selected && Piece.getPieceAtLocation(new Location(r,c), board)!=null){//should select a piece
+			from = new Location(r,c);
+			selected = true;
+		}else if(selected){//should select a place to go
+			to = new Location(r,c);
+			if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
+				board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
+				board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
+				player = 3-player; //other player's turn
+			}
+			selected = false;
+		}
+//TODO only select current player's pieces
 		this.repaint();
 	}
 

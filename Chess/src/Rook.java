@@ -10,7 +10,7 @@ public class Rook extends Piece{
 		super("rook", player);
 	}
 	
-	//Rooks can only move left/right or up/down. Then can not jump over pieces. 
+	//Rooks can only move left/right or up/down. This means at least one of deltaX or deltaY needs to be 0
 	@Override
 	public boolean isValidMove(Location from, Location to, Piece[][] b) {
 		boolean canMoveThere = (from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0) && !to.equals(from);
