@@ -40,11 +40,23 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[0][0] = new Queen(2);
 		board[7][7] = new Rook(2);
 		board[7][6] = new Rook(1);
-		
+		board[3][3] = new Knight(1);
 		player = 1;
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
+	}
+	
+	
+	public static boolean playerWon(int player, Piece[][] board){
+		for(int c = 0; c <8; c++){
+			for (int r = 0; r<8; r++){//check every square
+				if(board[r][c]!= null && board[r][c] instanceof King && board[r][c].getPlayer()==(3-player)){//If there is a piece and it is a king of the other player's type they have a king
+					return false;//they have a king so you have not won
+				}
+			}
+		}
+		return true; //they don't have a king you won
 	}
 	
 	// method: paintComponent
@@ -100,6 +112,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		System.out.println(playerWon(1, board));
+		System.out.println(playerWon(2, board));
 		int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
 		int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
 		Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
