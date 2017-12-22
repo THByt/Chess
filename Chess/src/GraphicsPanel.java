@@ -34,12 +34,33 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
-		board[3][6] = new Rook(2);
-		board[1][6] = new Bishop(2);
-		board[7][6] = new King(1);
-		board[3][1] = new King(2);
-		board[3][2] = new King(1);
-		board[6][4] = new King(1);
+		for(int i = 0; i<7; i++){
+			double random = Math.random();
+			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));
+			Piece p = null;
+			if(random<0.33){
+				p = new King(1);
+			}else if(random<0.66){
+				p = new Bishop(1);
+			}else{
+				p = new Rook(1);
+			}
+			board[l.getRow()][l.getColumn()] = p;
+		}
+		
+		for(int i = 0; i<7; i++){
+			double random = Math.random();
+			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));
+			Piece p = null;
+			if(random<0.33){
+				p = new King(2);
+			}else if(random<0.66){
+				p = new Bishop(2);
+			}else{
+				p = new Rook(2);
+			}
+			board[l.getRow()][l.getColumn()] = p;
+		}
 		player = 1;
 		
         this.setFocusable(true);					 // for keylistener
@@ -103,8 +124,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
 		int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
-		
-		if(!selected && Piece.getPieceAtLocation(new Location(r,c), board)!=null){//should select a piece
+		Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
+		if(!selected && p!=null && p.getPlayer()==player){//should select a piece
 			from = new Location(r,c);
 			selected = true;
 		}else if(selected){//should select a place to go
