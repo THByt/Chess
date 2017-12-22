@@ -11,7 +11,7 @@
 //Fix comments
 
 import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -67,14 +67,17 @@ public abstract class Piece {
 	public abstract boolean isValidMove(Location from, Location to, Piece[][]b);
 	
 	// method: draw
-	// description: This method is used to draw the image onto the GraphicsPanel.  You shouldn't need to 
+	// description: This method is used to draw the image onto the GraphicsPanel.  You shouldn't need to <-HAHAHAHAHHAHAHA
 	//				modify this method.
+	//				Rotates the image by -boardAngle to keep it upright
 	// parameters: Graphics g - this object draw's the image.
 	//			   Component c - this is the component that the image will be drawn onto.
 	//			   Location l - a Location that determines where to draw the piece.
-	public void draw(Graphics g, Component c, Location l) {
-        image.paintIcon(c, g, l.getColumn()*90 + 45 - (image.getIconWidth()/2), l.getRow()*90 + 45 -( image.getIconHeight()/2)); // you'll need to update the last two parameters so that it will 
+	public void draw(Graphics2D g2, Component c, Location l, double boardAngle) {
+		g2.rotate(-boardAngle, l.getColumn()*90 + 45, l.getRow()*90 + 45);
+        image.paintIcon(c, g2, l.getColumn()*90 + 45 - (image.getIconWidth()/2), l.getRow()*90 + 45 - (image.getIconHeight()/2)); // you'll need to update the last two parameters so that it will 
         											  // correctly draw the piece in the right location.
+        g2.rotate(boardAngle, l.getColumn()*90 + 45, l.getRow()*90 + 45);
     }
 
 	public int getPlayer() {
