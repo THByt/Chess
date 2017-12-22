@@ -10,6 +10,9 @@
 //Modified 12/21 by Isaac Hu
 //Fix comments
 
+//Mdodified 12/22/17 by Ethan Frank
+//Add copy method, for eventual virtual copies to test if a move is legal during checked board
+
 import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
@@ -17,7 +20,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 public abstract class Piece {
-	private ImageIcon image;			// The ImageIcon will be used to hold the Character's png.
+	protected ImageIcon image;			// The ImageIcon will be used to hold the Character's png.
 	
 	protected int player;				// This int will represent which team the piece is, 1 for yellow team, 
 									    // 2 for black team. 
@@ -83,6 +86,14 @@ public abstract class Piece {
 
 	public void setPlayer(int player) {
 		this.player = player;
+	}
+	
+	public Piece copy(){
+		Piece p = new Rook(player); //So technically it starts as a rook but then it turns into a functional whatever
+		p.image = image; 			//set image
+		p.hasMoved = hasMoved; 		//set has moved
+		setImageIcon("images2/" + getClass().getName().toLowerCase() + player + ".png"); //There now it has it's own image
+		return p; //So now it's a copy
 	}
 	
 	public static Piece getPieceAtLocation(Location l, Piece[][] b){
