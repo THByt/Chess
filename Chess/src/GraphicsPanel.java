@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 
 public class GraphicsPanel extends JPanel implements MouseListener{
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
-	private final int OFFSET = 30;
 	private Location from;   			    // holds the coordinates of the square that the user would like to move from.
 	private Location to;   				    // holds the coordinates of the square that the user would like to move to.
 	private boolean selected;   			// false until the game has started by somebody clicking on the board.  should also be set to false
@@ -34,33 +33,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
-		for(int i = 0; i<7; i++){
-			double random = Math.random();
-			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));
-			Piece p = null;
-			if(random<0.33){
-				p = new King(1);
-			}else if(random<0.66){
-				p = new Bishop(1);
-			}else{
-				p = new Rook(1);
-			}
-			board[l.getRow()][l.getColumn()] = p;
-		}
-		
-		for(int i = 0; i<7; i++){
-			double random = Math.random();
-			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));
-			Piece p = null;
-			if(random<0.33){
-				p = new King(2);
-			}else if(random<0.66){
-				p = new Bishop(2);
-			}else{
-				p = new Rook(2);
-			}
-			board[l.getRow()][l.getColumn()] = p;
-		}
 		player = 1;
 		
         this.setFocusable(true);					 // for keylistener
@@ -108,9 +80,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			}
 		}
 
-		// instead of drawing a single piece you should loop through the two-dimensional array and draw each piece except for 
-		// empty spaces.
-		//p.draw(g2, this, new Location(4,6));
+		//Draw the pieces
 		for(int c = 0; c <8; c++){
 			for (int r = 0; r<8; r++){
 				if(board[r][c]!=null){
@@ -137,7 +107,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			}
 			selected = false;
 		}
-//TODO only select current player's pieces
 		this.repaint();
 	}
 

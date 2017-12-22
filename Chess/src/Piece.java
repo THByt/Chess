@@ -19,8 +19,9 @@ import javax.swing.ImageIcon;
 public abstract class Piece {
 	private ImageIcon image;			// The ImageIcon will be used to hold the Character's png.
 	
-	protected int player;					// This int will represent which team the piece is, 1 for yellow team, 
+	protected int player;				// This int will represent which team the piece is, 1 for yellow team, 
 									    // 2 for black team. 
+	protected boolean hasMoved;
 	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Piece(){
