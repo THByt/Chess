@@ -28,7 +28,7 @@ public class Rook extends Piece{
 				if(Piece.getPieceAtLocation(new Location(from.getRow(), c), b)!=null){
 					return Piece.getPieceAtLocation(new Location(from.getRow(), c), b).getPlayer()!=player
 							&& to.equals(new Location(from.getRow(),c));
-				}//Returns true because it stops at the piece, instead of saying ""thisp eoie is int eh way
+				}//Returns true because it stops at the piece
 			}
 		}else{//go in y direction
 			for(int r = from.getRow()+y_way; r!=to.getRow()+y_way; r+=y_way){
