@@ -36,12 +36,33 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
-		board[2][5] = new King(1);
-		board[2][4] = new King(2);
-		board[6][3] = new King(1);
-		board[0][7] = new King(2);
-		board[4][3] = new Rook(1);
-		board[3][4] = new Bishop(2);
+		for(int i = 0; i<10; i++){		
+			 			double random = Math.random();		
+			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+			 			Piece p = null;		
+			 			if(random<0.33){		
+			 				p = new King(1);		
+			 			}else if(random<0.66){		
+			 				p = new Bishop(1);		
+			 			}else{		
+			 				p = new Rook(1);		
+			 			}		
+			 			board[l.getRow()][l.getColumn()] = p;		
+			 		}		
+			 				
+			 		for(int i = 0; i<10; i++){		
+			 			double random = Math.random();		
+			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+			 			Piece p = null;		
+			 			if(random<0.33){		
+			 				p = new King(2);		
+			 			}else if(random<0.66){		
+			 				p = new Bishop(2);		
+			 			}else{		
+			 				p = new Rook(2);		
+			 			}		
+			 			board[l.getRow()][l.getColumn()] = p;		
+			 		}
 		player = 1;
 		boardAngle = 0;
 		
@@ -132,7 +153,12 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	}
 	
 	public void clock(){
-		boardAngle+=0.55; //rotate board
+		if(boardAngle%Math.PI<0.001){
+			boardAngle+=0.0001; //rotate board so slowly it's imperceptable to make a pause
+		}else{
+			boardAngle+=0.4; //rotate board quickly
+		}
+		
 		if(player == 2 && boardAngle%(2*Math.PI)>Math.PI){//Player two's turn, stop at their view
 			boardAngle = Math.PI;
 			t.stop();
