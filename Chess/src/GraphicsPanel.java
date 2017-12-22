@@ -34,7 +34,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 		
-		board[0][0] = new Knight(2);
+		board[0][0] = new Queen(2);
 		board[7][7] = new Rook(2);
 		board[7][6] = new Rook(1);
 		
