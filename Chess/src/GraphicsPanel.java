@@ -17,8 +17,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.awt.Color;
 import javax.swing.JPanel;
+
+import javazoom.jl.decoder.JavaLayerException;
 
 public class GraphicsPanel extends JPanel implements MouseListener{
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
@@ -33,15 +36,59 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 
-		board[3][6] = new Rook(1);
-		board[1][2] = new Bishop(2);
-		board[5][4] = new King(1);
-		board[0][5] = new King(2);
-		board[0][0] = new Queen(2);
-		board[7][7] = new Rook(2);
-		board[7][6] = new Rook(1);
-		board[3][3] = new Knight(1);
+		for(int i = 0; i<12; i++){		
+			double random = Math.random();		
+			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+			Piece p = null;		
+			if(random<0.2){		
+				p = new King(1);		
+			}else if(random<0.4){		
+				p = new Bishop(1);		
+			}else if(random<0.6){		
+				p = new Rook(1);		
+			}else if(random<0.8){		
+				p = new Knight(1);		
+			}else if(random<1){		
+				p = new Queen(1);		
+			}		
+			
+			board[l.getRow()][l.getColumn()] = p;		
+		}		
+				
+		for(int i = 0; i<12; i++){		
+			double random = Math.random();		
+			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+			Piece p = null;		
+			if(random<0.2){		
+				p = new King(2);		
+			}else if(random<0.4){		
+				p = new Bishop(2);		
+			}else if(random<0.6){		
+				p = new Rook(2);		
+			}else if(random<0.8){		
+				p = new Knight(2);		
+			}else if(random<1){		
+				p = new Queen(2);		
+			}	
+			board[l.getRow()][l.getColumn()] = p;		
+		}
 		player = 1;
+		
+		//play music
+		new Thread(new Runnable(){ 
+			javazoom.jl.player.Player player;
+			@Override
+			public void run() {
+				while(true){
+					try{
+						player = new javazoom.jl.player.Player(getClass().getResource("sounds/background_music.mp3").openStream());
+						player.play();
+					} catch (JavaLayerException | IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}	
+		}).start();
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
@@ -120,12 +167,17 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		if(!selected && p!=null && p.getPlayer()==player){//should select a piece
 			from = new Location(r,c);
 			selected = true;
+		}else if(!selected){//They did not click on a valid piece
+			SoundEffects.ERROR.play();
 		}else if(selected){//should select a place to go
+		
 			to = new Location(r,c);
 			if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
 				board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
 				board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
 				player = 3-player; //other player's turn
+			}else if(!from.equals(to)){
+				SoundEffects.ERROR.play();
 			}
 			selected = false;
 		}
