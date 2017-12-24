@@ -120,7 +120,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		//Draw different stuff depending on state
 		switch(state){
 		case START:
-			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 200, Color.BLACK);
+			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 240, Color.BLACK);
 			break;
 		case PLAY:
 			break;
