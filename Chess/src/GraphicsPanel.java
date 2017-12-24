@@ -13,12 +13,18 @@
 // implement moving pieces 
 
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.Color;
 import javax.swing.JPanel;
+
+enum State{
+	START, PLAY, GAMEOVER
+}
 
 public class GraphicsPanel extends JPanel implements MouseListener{
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
@@ -28,6 +34,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	                         				// after an attempted move.
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
 	private int player;						// current player (1 or 2)
+	private State state; 					// Current game state
 	
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
@@ -42,6 +49,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[7][6] = new Rook(1);
 		board[3][3] = new Knight(1);
 		player = 1;
+		state = State.START;
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
@@ -65,7 +73,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	// parameters: Graphics g - This object is used to draw your images onto the graphics panel.
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
-		
+
 		// Draw the board
 		g2.setColor(Color.gray);
 		g2.drawLine(SQUARE_WIDTH*8, 0, SQUARE_WIDTH*8, SQUARE_WIDTH*8);
@@ -108,28 +116,83 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				}
 			}
 		}
+		
+		//Draw different stuff depending on state
+		switch(state){
+		case START:
+			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 200, Color.BLACK);
+			break;
+		case PLAY:
+			break;
+		case GAMEOVER:
+			Color color = Color.BLACK;//player==1?Color.WHITE:
+			drawCenteredText(g2, "PLAYER " + player, SQUARE_WIDTH*4-60, 140, color);
+			drawCenteredText(g2, "WINS!", SQUARE_WIDTH*4+60, 140, color);
+			break;
+			
+		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println(playerWon(1, board));
-		System.out.println(playerWon(2, board));
-		int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
-		int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
-		Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
-		if(!selected && p!=null && p.getPlayer()==player){//should select a piece
-			from = new Location(r,c);
-			selected = true;
-		}else if(selected){//should select a place to go
-			to = new Location(r,c);
-			if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
-				board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
-				board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
-				player = 3-player; //other player's turn
+		//do different stuff depending on state
+		switch(state){
+		case START:
+			state = State.PLAY; //Start game on click
+			this.repaint(); //clears text from screen
+			break;
+		case PLAY:
+			int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
+			int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
+			Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
+			if(!selected && p!=null && p.getPlayer()==player){//should select a piece
+				from = new Location(r,c);
+				selected = true;
+			}else if(selected){//should select a place to go
+				to = new Location(r,c);
+				if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
+					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
+					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
+					
+					if(playerWon(player, board)){
+						state = State.GAMEOVER;
+					}else{
+						player = 3-player; //other player's turn
+					}
+					
+				}
+				selected = false;
 			}
-			selected = false;
+			this.repaint();
+			break;
+		case GAMEOVER:
+			break;
 		}
-		this.repaint();
+	}
+	
+	// Method: drawCenteredText
+	// Description: Draws text centered at x position
+	// Params: Graphics2D g2: the graphics to use to draw
+				// String text: the text to draw
+				// int y: the y coordinate to draw the text at
+				// int size: the size of the text
+				// int x: x coordinate to center on
+				// Color c: color of text
+	// Returns: void
+	private void drawCenteredText(Graphics2D g2, String text, int y, int size, int x, Color color){
+		Font font = new Font("Courier", 1, size); //Create new font of the size
+		FontMetrics metrics = g2.getFontMetrics(font); // Get the font metrics
+		g2.setColor(color);
+		g2.setFont(font);
+		g2.drawString(text, x-metrics.stringWidth(text)/2, y); // Draw the centered text
+	}
+	
+	// Method: drawCenteredText
+	// Description: Draws text centered in screen at certain color
+	// Params: @see drawCenteredText(Graphics2D g2, String text, int y, int size, int x, Color color) for description of params
+	// Returns: void
+	private void drawCenteredText(Graphics2D g2, String text, int y, int size, Color color){
+		drawCenteredText(g2, text, y, size, SQUARE_WIDTH*4, color);
 	}
 
 	@Override
