@@ -12,7 +12,7 @@ public class King extends Piece{
 	@Override
 	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
 		return (Math.abs(from.getRow()-to.getRow())<=1
-					&&	Math.abs(from.getColumn()-to.getColumn())<=1 && !to.equals(from))
+					&&	Math.abs(from.getColumn()-to.getColumn())<=1)
 					&& (Piece.getPieceAtLocation(to, b)==null || Piece.getPieceAtLocation(to, b).getPlayer()!=player);
 	}
 }

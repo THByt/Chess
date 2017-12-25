@@ -16,7 +16,7 @@ public class Rook extends Piece{
 	//Rooks can only move left/right or up/down. This means at least one of deltaX or deltaY needs to be 0
 	@Override
 	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
-		if(!((from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0) && !to.equals(from))) return false; //can't move there
+		if(!(from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0)) return false; //can't move there
 		
 		int x_way = (int) Math.signum(to.getColumn()-from.getColumn()); //which direction to go in the x direction to get from here to there
 		int y_way = (int) Math.signum(to.getRow()-from.getRow());		//which direction to go in the y direction
