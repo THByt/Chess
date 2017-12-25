@@ -26,6 +26,10 @@ enum State{
 	START, PLAY, GAMEOVER
 }
 
+// Class: GraphicsPanel
+// Written by: Ethan Frank
+// Date: Dec 24, 2017
+// Description:
 public class GraphicsPanel extends JPanel implements MouseListener{
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
 	private Location from;   			    // holds the coordinates of the square that the user would like to move from.
@@ -35,6 +39,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
 	private int player;						// current player (1 or 2)
 	private State state; 					// Current game state
+	private boolean lastClickTurnSwitch; 	// True if the last click moved a piece. Used to draw "check" until they click again
 	
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
@@ -56,6 +61,10 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	}
 	
 	
+	// Method: playerWon
+	// Description: Checks to see if a certain player has won, i.e., opponent doesn't have a king anymore
+	// Params: int player: the player to check if they have won, Piece[][] board: the current board to check on
+	// Returns: boolean: has that player won?
 	public static boolean playerWon(int player, Piece[][] board){
 		for(int c = 0; c <8; c++){
 			for (int r = 0; r<8; r++){//check every square
@@ -65,6 +74,36 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			}
 		}
 		return true; //they don't have a king you won
+	}
+	
+	// Method: isInCheck
+	// Description: Checks if a player is in check
+	// Params: int player: the player to see if is in check, Piece[][] board: the current board
+	// Returns: boolean: true if they are in check
+	public static boolean isInCheck(int player,  Piece[][] board){
+		Location kingLocation = new Location(); //the location of the player's king
+		boolean inCheck = false; 				//is the king in check?
+		
+		//find location of king
+		for(int c = 0; c <8; c++){	
+			for (int r = 0; r<8; r++){
+				if(board[r][c] instanceof King && board[r][c].getPlayer()==player){//null instanceof King is false
+					kingLocation = new Location(r,c);
+				}
+			}
+		}
+		
+		//See if any of the opponent's pieces can capture the king
+		for(int c = 0; c <8; c++){	
+			for (int r = 0; r<8; r++){
+				if(board[r][c] != null && board[r][c].getPlayer() == 3-player && //If there is a piece and it is the opponet's and it can move to the king
+						board[r][c].isValidMove(new Location(r,c), kingLocation, board)){
+					return true;
+				}
+			}
+		}
+	
+		return false;
 	}
 	
 	// method: paintComponent
@@ -123,13 +162,15 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 240, Color.BLACK);
 			break;
 		case PLAY:
+			if(lastClickTurnSwitch && isInCheck(player, board)){
+				drawCenteredText(g2, "CHECK", SQUARE_WIDTH*4-20, 240, Color.BLACK);
+			}
 			break;
 		case GAMEOVER:
 			Color color = Color.BLACK;//player==1?Color.WHITE:
 			drawCenteredText(g2, "PLAYER " + player, SQUARE_WIDTH*4-60, 140, color);
 			drawCenteredText(g2, "WINS!", SQUARE_WIDTH*4+60, 140, color);
 			break;
-			
 		}
 	}
 
@@ -145,6 +186,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
 			int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
 			Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
+			lastClickTurnSwitch = false;
 			if(!selected && p!=null && p.getPlayer()==player){//should select a piece
 				from = new Location(r,c);
 				selected = true;
@@ -154,10 +196,11 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
 					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
 					
-					if(playerWon(player, board)){
+					if(playerWon(player, board)){//Check if game over
 						state = State.GAMEOVER;
 					}else{
 						player = 3-player; //other player's turn
+						lastClickTurnSwitch = true;
 					}
 					
 				}
