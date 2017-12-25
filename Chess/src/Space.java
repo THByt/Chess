@@ -10,7 +10,7 @@ public class Space extends Piece{
 	}
 	
 	@Override
-	public boolean isValidMove(Location from, Location to, Piece[][] b) {
+	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
 		return false;
 	}
 

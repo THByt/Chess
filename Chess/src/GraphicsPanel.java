@@ -82,7 +82,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	// Returns: boolean: true if they are in check
 	public static boolean isInCheck(int player,  Piece[][] board){
 		Location kingLocation = new Location(); //the location of the player's king
-		boolean inCheck = false; 				//is the king in check?
 		
 		//find location of king
 		for(int c = 0; c <8; c++){	

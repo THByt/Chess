@@ -13,7 +13,7 @@ public class Knight extends Piece{
 	
 	//A knight can only move "some linear combination of two î and one ˆj" -Ethan Frank, so one direction must be ± 2, and the other ±1
 	@Override
-	public boolean isValidMove(Location from, Location to, Piece[][] b) {
+	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
 		
 		
 		//Check if it is not within the range of the knight
