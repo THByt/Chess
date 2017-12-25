@@ -97,7 +97,13 @@ public abstract class Piece implements Cloneable{
 		boardCopy[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, boardCopy);
 		boardCopy[from.getRow()][from.getColumn()] = null;
 		
-		return !GraphicsPanel.isInCheck(player, boardCopy); //If they are still in check the move is not valid 
+		return !GraphicsPanel.isInCheck(player, boardCopy) || //If they are still in check the move is not valid 
+				(Piece.getPieceAtLocation(to, board) instanceof King && //Unless the move captures the king. That is always valid. (see comment below)
+						Piece.getPieceAtLocation(to, board).getPlayer()==3-player); 
+		// This fixes a bug where a piece thought it was valid to put the other king into check, instead of protecting its own king. 
+		// Because the other player thought it couldn't capture the king because it would still be in check, the other player thought
+		// it was valid to check the other king because it would no longer be in "check" cause the other piece couldn't capture it's king.
+		// Letting the piece know it is always ok to capture the king fixes this problem. 
 	}
 	
 	// method: isValidMove
