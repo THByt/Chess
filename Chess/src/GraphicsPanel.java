@@ -32,8 +32,8 @@ enum State{
 // Description:
 public class GraphicsPanel extends JPanel implements MouseListener{
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
-	private Location from;   			    // holds the coordinates of the square that the user would like to move from.
-	private Location to;   				    // holds the coordinates of the square that the user would like to move to.
+	private static Location from;   			    // holds the coordinates of the square that the user would like to move from.
+	private static Location to;   				    // holds the coordinates of the square that the user would like to move to.
 	private boolean selected;   			// false until the game has started by somebody clicking on the board.  should also be set to false
 	                         				// after an attempted move.
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
@@ -46,11 +46,17 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board = new Piece[8][8];	//Initialize board
 
 		board[3][4] = new Rook(1);
-		board[1][2] = new Bishop(2);
+		board[1][2] = new Rook(1);
+		board[7][6] = new Rook(1);
+		board[2][3] = new Bishop(2);
 		board[5][4] = new King(1);
-		board[3][5] = new King(2);
+		board[1][5] = new King(2);
+		board[2][4] = new Knight(1);
+		board[7][2] = new Knight(2);
+		board[6][6] = new Rook(2);
+		board[0][0] = new Queen(1);
 
-		player = 2;
+		player = 1;
 		state = State.START;
 		
         this.setFocusable(true);					 // for keylistener
@@ -58,19 +64,30 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	}
 	
 	
-	// Method: playerWon
-	// Description: Checks to see if a certain player has won, i.e., opponent doesn't have a king anymore
+	// Method: isCheckMate
+	// Description: Checks to see if a certain player has won, i.e., opponent is in checkmate
 	// Params: int player: the player to check if they have won, Piece[][] board: the current board to check on
 	// Returns: boolean: has that player won?
-	public static boolean playerWon(int player, Piece[][] board){
-		for(int c = 0; c <8; c++){
-			for (int r = 0; r<8; r++){//check every square
-				if(board[r][c]!= null && board[r][c] instanceof King && board[r][c].getPlayer()==(3-player)){//If there is a piece and it is a king of the other player's type they have a king
-					return false;//they have a king so you have not won
+	public static boolean isCheckMate(int player, Piece[][] board){
+		//Check to see if there are any moves the player can make to get out of check. If not, they are in checkmate and the they lose
+		
+		for(int c1 = 0; c1 <8; c1++){ //Look through all squares
+			for (int r1 = 0; r1<8; r1++){
+				Location from = new Location(r1,c1);
+				Piece p = Piece.getPieceAtLocation(from, board);
+				if(p!=null && p.getPlayer()==player){ //If there is a piece on player's team
+					for(int c2 = 0; c2 <8; c2++){ //See if that piece can make any valid moves
+						for (int r2 = 0; r2<8; r2++){
+							if(p.isValidMove(from, new Location(r2,c2), board)){
+								return false; //If they can make a valid move they are not in checkMate
+							}
+						}
+					}
 				}
 			}
 		}
-		return true; //they don't have a king you won
+		
+		return true; //otherwise they are
 	}
 	
 	// Method: isInCheck
@@ -192,7 +209,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
 					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
 					
-					if(playerWon(player, board)){//Check if game over
+					if(isCheckMate(3-player, board)){//Check if game over
 						state = State.GAMEOVER;
 					}else{
 						player = 3-player; //other player's turn
