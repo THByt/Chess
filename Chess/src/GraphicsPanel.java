@@ -17,10 +17,15 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.Color;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import sun.net.www.content.audio.aiff;
 
 enum State{
 	START, PLAY, GAMEOVER
@@ -40,24 +45,75 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private int player;						// current player (1 or 2)
 	private State state; 					// Current game state
 	private boolean lastClickTurnSwitch; 	// True if the last click moved a piece. Used to draw "check" until they click again
+	private AI ai;							// An AI
+	private Timer t;						// The timer that allows the AI to go after drawing the player's move
+	private Move lastMove;					// The last move that was made, for visualization purposes	
 	
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
+//
+//		board[4][2] = new Rook(2);
+//		board[1][5] = new Rook(2);
+//		board[4][6] = new King(2);
+//		board[6][3] = new King(1);
+		
+		for(int i = 0; i<6; i++){		
+			 			double random = Math.random();		
+			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+			 			Piece p = null;		
+			 			if(random<0.1 || i == 3){		
+			 				p = new King(1);		
+			 			}else if(random<0.4){		
+			 				p = new Bishop(1);		
+			 			}else if(random<0.6){	
+			 				p = new Rook(1);		
+			 			}else if(random<0.65){	
+			 				p = new Queen(1);		
+			 			}else if(random<1){	
+			 				p = new Knight(1);		
+			 			}		
+			 			board[l.getRow()][l.getColumn()] = p;		
+			 		}		
+			 				
+			 		for(int i = 0; i<6; i++){		
+			 			double random = Math.random();		
+			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+			 			Piece p = null;		
+			 			if(random<0.1 || i == 3){		
+			 				p = new King(2);		
+			 			}else if(random<0.4){		
+			 				p = new Bishop(2);		
+			 			}else if(random<0.6){	
+			 				p = new Rook(2);		
+			 			}else if(random<0.65){	
+			 				p = new Queen(2);		
+			 			}else if(random<1){	
+			 				p = new Knight(2);		
+			 			}		
+			 			board[l.getRow()][l.getColumn()] = p;		
+			 		}
 
-		board[3][4] = new Rook(1);
-		board[1][2] = new Rook(1);
-		board[7][6] = new Rook(1);
-		board[2][3] = new Bishop(2);
-		board[5][4] = new King(1);
-		board[1][5] = new King(2);
-		board[2][4] = new Knight(1);
-		board[7][2] = new Knight(2);
-		board[6][6] = new Rook(2);
-		board[0][0] = new Queen(1);
-
-		player = 1;
-		state = State.START;
+		player = 1; //Player 1 starts
+		state = State.START; //Start on opening screen
+		ai = new AI(2);		//Create a new AI for player 2
+		lastMove = new Move(new Location(-1,-1), new Location(-1,-1)); //At begining there was no last move;
+		
+		t = new Timer(0,new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lastMove = ai.getMove(board);
+				AI.makeMove(board,lastMove);//make the move
+				repaint(); //redraw
+				if(isInCheckMate(3-player, board)){//Check if game over
+					state = State.GAMEOVER;
+				}else{
+					player = 3 - player;
+				}
+				
+				t.stop();//end AI's turn
+			}
+		});
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
@@ -65,10 +121,10 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	
 	
 	// Method: isCheckMate
-	// Description: Checks to see if a certain player has won, i.e., opponent is in checkmate
+	// Description: Sees if a player has won, i.e., opponent is in checkmate
 	// Params: int player: the player to check if they have won, Piece[][] board: the current board to check on
 	// Returns: boolean: has that player won?
-	public static boolean isCheckMate(int player, Piece[][] board){
+	public static boolean isInCheckMate(int player, Piece[][] board){
 		//Check to see if there are any moves the player can make to get out of check. If not, they are in checkmate and the they lose
 		
 		for(int c1 = 0; c1 <8; c1++){ //Look through all squares
@@ -147,6 +203,11 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			}
 		}
 		
+		//Draw the last move
+		g2.setColor(new Color(150,150,255)); 
+		g2.fillOval(lastMove.getFrom().getColumn()*SQUARE_WIDTH+10,lastMove.getFrom().getRow()*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
+		g2.fillOval(lastMove.getTo().getColumn()*SQUARE_WIDTH+10,lastMove.getTo().getRow()*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
+
 		if(selected){
 			for(int c = 0; c <8; c++){
 				for (int r = 0; r<8; r++){
@@ -159,7 +220,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				}
 			}
 		}
-
+		
 		//Draw the pieces
 		for(int c = 0; c <8; c++){
 			for (int r = 0; r<8; r++){
@@ -200,7 +261,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
 			Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
 			lastClickTurnSwitch = false;
-			if(!selected && p!=null && p.getPlayer()==player){//should select a piece
+			lastMove = new Move(new Location(-1,-1), new Location(-1,-1)); //Make lastmove go away after one click
+			if(!selected && p!=null ){//should select a piece //&& p.getPlayer()==player//TODO reenable
 				from = new Location(r,c);
 				selected = true;
 			}else if(selected){//should select a place to go
@@ -208,12 +270,15 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
 					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
 					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
+					lastMove = new Move(from, to);
 					
-					if(isCheckMate(3-player, board)){//Check if game over
+					if(isInCheckMate(3-player, board)){//Check if game over
 						state = State.GAMEOVER;
 					}else{
 						player = 3-player; //other player's turn
 						lastClickTurnSwitch = true;
+						this.repaint();
+						t.start(); //Make the AI take it's turn
 					}
 					
 				}

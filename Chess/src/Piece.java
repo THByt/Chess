@@ -96,7 +96,7 @@ public abstract class Piece implements Cloneable{
 		//Make the move (virtually) to test it
 		boardCopy[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, boardCopy);
 		boardCopy[from.getRow()][from.getColumn()] = null;
-		
+//		return true; //TODO reenable
 		return !GraphicsPanel.isInCheck(player, boardCopy) || //If they are still in check the move is not valid 
 				(Piece.getPieceAtLocation(to, board) instanceof King && //Unless the move captures the king. That is always valid. (see comment below)
 						Piece.getPieceAtLocation(to, board).getPlayer()==3-player); 
@@ -136,5 +136,10 @@ public abstract class Piece implements Cloneable{
 	
 	public static Piece getPieceAtLocation(Location l, Piece[][] b){
 		return b[l.getRow()][l.getColumn()];
+	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+	    return super.clone();
 	}
 }

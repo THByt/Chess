@@ -42,6 +42,6 @@ public class Location {
 	}
 	
 	public String toString(){
-		return row + ", " + column;
+		return row + "," + column;
 	}
 }
