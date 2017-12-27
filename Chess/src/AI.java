@@ -27,7 +27,7 @@ public class AI {
 	
 	public int minimax(Piece[][] board, int player, int d, int alpha, int beta){
 		//Do thing where it doesn't calculate move list each time
-		int depthLimit = 3;
+		int depthLimit = 4;
 		int winner = -1; //Who won, used to do less calculations
 		
 		if(d>=depthLimit){
@@ -91,38 +91,18 @@ public class AI {
 		}	
 	}
 	
-	// Method: getMoves
-	// Description: Returns an ArrayList of all valid moves
-	// Params: Piece[][] board: the board
-	// Returns: ArrayList<Move>
-	private ArrayList<Move> getMoves(Piece[][] board, int player){
-		ArrayList<Move> moves = new ArrayList<Move>();
-		
-		for(int c1 = 0; c1 <8; c1++){ //Look through all squares
-			for (int r1 = 0; r1<8; r1++){
-				Location from = new Location(r1,c1);
-				Piece p = Piece.getPieceAtLocation(from, board);
-				if(p!=null && p.getPlayer()==player){ //If there is a piece on player's team
-					for(int c2 = 0; c2 <8; c2++){ //See if that piece can make any valid moves
-						for (int r2 = 0; r2<8; r2++){
-							if(p.isValidMove(from, new Location(r2,c2), board)){//If it can add it to the list
-								moves.add(new Move(from, new Location(r2,c2)));
-							}
-						}
-					}
-				}
-			}
-		}
-		return moves;
-	}
-	
+
 	// Method: score
-	// Description: Scores the board. If it favors player 1, the number will be high. If it favors player two, the number will be low
+	// Description: Scores the board. If the board favors player 1, the number will be high. If it favors player two, the number will be low
 	// Params:
 	// Returns: int
 	private int score(Piece[][] board, int player, int d, int winner){
 		int score = 0;
 		int pieceScore = 0;//Score for piece count
+		
+		if(winner!=0){ //If they win give them a very large score so this move is chosen
+			return 1000000*(winner==1?1:-1)+(d*player==1?-10:10);
+		}
 		
 		if(GraphicsPanel.isInCheck(2, board)){
 			score+=50000;
@@ -166,6 +146,30 @@ public class AI {
 		return score;
 	}
 	
+	// Method: getMoves
+	// Description: Returns an ArrayList of all valid moves
+	// Params: Piece[][] board: the board
+	// Returns: ArrayList<Move>
+	private ArrayList<Move> getMoves(Piece[][] board, int player){
+		ArrayList<Move> moves = new ArrayList<Move>();
+		
+		for(int c1 = 0; c1 <8; c1++){ //Look through all squares
+			for (int r1 = 0; r1<8; r1++){
+				Location from = new Location(r1,c1);
+				Piece p = Piece.getPieceAtLocation(from, board);
+				if(p!=null && p.getPlayer()==player){ //If there is a piece on player's team
+					for(int c2 = 0; c2 <8; c2++){ //See if that piece can make any valid moves
+						for (int r2 = 0; r2<8; r2++){
+							if(p.isValidMove(from, new Location(r2,c2), board)){//If it can add it to the list
+								moves.add(new Move(from, new Location(r2,c2)));
+							}
+						}
+					}
+				}
+			}
+		}
+		return moves;
+	}
 	
 	// Method: makeMove
 	// Description: Moves a piece

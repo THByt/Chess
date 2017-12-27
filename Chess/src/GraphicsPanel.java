@@ -12,6 +12,8 @@
 // add current player variable	
 // implement moving pieces 
 
+//12/27/17: takes about 13.8 seconds
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -45,75 +47,102 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private int player;						// current player (1 or 2)
 	private State state; 					// Current game state
 	private boolean lastClickTurnSwitch; 	// True if the last click moved a piece. Used to draw "check" until they click again
-	private AI ai;							// An AI
-	private Timer t;						// The timer that allows the AI to go after drawing the player's move
+	private AI ai1;							// An AI
+	private AI ai2;	
+	private Timer t1;						// The timer that allows the AI to go after drawing the player's move
+	private Timer t2;
 	private Move lastMove;					// The last move that was made, for visualization purposes	
 	
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
-//
-//		board[4][2] = new Rook(2);
-//		board[1][5] = new Rook(2);
-//		board[4][6] = new King(2);
-//		board[6][3] = new King(1);
-		
-		for(int i = 0; i<6; i++){		
-			 			double random = Math.random();		
-			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
-			 			Piece p = null;		
-			 			if(random<0.1 || i == 3){		
-			 				p = new King(1);		
-			 			}else if(random<0.4){		
-			 				p = new Bishop(1);		
-			 			}else if(random<0.6){	
-			 				p = new Rook(1);		
-			 			}else if(random<0.65){	
-			 				p = new Queen(1);		
-			 			}else if(random<1){	
-			 				p = new Knight(1);		
-			 			}		
-			 			board[l.getRow()][l.getColumn()] = p;		
-			 		}		
-			 				
-			 		for(int i = 0; i<6; i++){		
-			 			double random = Math.random();		
-			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
-			 			Piece p = null;		
-			 			if(random<0.1 || i == 3){		
-			 				p = new King(2);		
-			 			}else if(random<0.4){		
-			 				p = new Bishop(2);		
-			 			}else if(random<0.6){	
-			 				p = new Rook(2);		
-			 			}else if(random<0.65){	
-			 				p = new Queen(2);		
-			 			}else if(random<1){	
-			 				p = new Knight(2);		
-			 			}		
-			 			board[l.getRow()][l.getColumn()] = p;		
-			 		}
+
+		board[3][0] = new Knight(2);
+		board[4][3] = new Knight(2);
+		board[7][7] = new King(2);
+		board[6][5] = new King(1);
+		board[4][5] = new Bishop(2);
+		board[5][3] = new Rook(2);
+		board[0][2] = new Rook(1);
+//		
+//		for(int i = 0; i<6; i++){		
+//			 			double random = Math.random();		
+//			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+//			 			Piece p = null;		
+//			 			if(i == 5){		
+//			 				p = new King(1);		
+//			 			}else if(random<0.4){		
+//			 				p = new Bishop(1);		
+//			 			}else if(random<0.6){	
+//			 				p = new Rook(1);		
+//			 			}else if(random<0.65){	
+//			 				p = new Queen(1);		
+//			 			}else if(random<1){	
+//			 				p = new Knight(1);		
+//			 			}		
+//			 			board[l.getRow()][l.getColumn()] = p;		
+//			 		}		
+//			 				
+//			 		for(int i = 0; i<6; i++){		
+//			 			double random = Math.random();		
+//			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
+//			 			Piece p = null;		
+//			 			if(i == 5){		
+//			 				p = new King(2);		
+//			 			}else if(random<0.4){		
+//			 				p = new Bishop(2);		
+//			 			}else if(random<0.6){	
+//			 				p = new Rook(2);		
+//			 			}else if(random<0.65){	
+//			 				p = new Queen(2);		
+//			 			}else if(random<1){	
+//			 				p = new Knight(2);		
+//			 			}		
+//			 			board[l.getRow()][l.getColumn()] = p;		
+//			 		}
 
 		player = 1; //Player 1 starts
 		state = State.START; //Start on opening screen
-		ai = new AI(2);		//Create a new AI for player 2
+		ai2 = new AI(2);		//Create a new AI for player 2
+		ai1 = new AI(1);		//Create a new AI for player 2
+
 		lastMove = new Move(new Location(-1,-1), new Location(-1,-1)); //At begining there was no last move;
-		
-		t = new Timer(0,new ActionListener(){
+		long startTime = System.currentTimeMillis();
+		t1 = new Timer(0,new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lastMove = ai.getMove(board);
+				lastMove = ai1.getMove(board);
 				AI.makeMove(board,lastMove);//make the move
 				repaint(); //redraw
 				if(isInCheckMate(3-player, board)){//Check if game over
 					state = State.GAMEOVER;
 				}else{
 					player = 3 - player;
+					t2.start();
 				}
 				
-				t.stop();//end AI's turn
+				t1.stop();//end AI's turn
 			}
 		});
+		t2 = new Timer(0,new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lastMove = ai2.getMove(board);
+				AI.makeMove(board,lastMove);//make the move
+				repaint(); //redraw
+				if(isInCheckMate(3-player, board)){//Check if game over
+					state = State.GAMEOVER;
+					System.out.println(System.currentTimeMillis()-startTime);
+				}else{
+					player = 3 - player;
+					t1.start();
+				}
+				
+				t2.stop();//end AI's turn
+			}
+		});
+		
+		t1.start();
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
@@ -278,7 +307,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						player = 3-player; //other player's turn
 						lastClickTurnSwitch = true;
 						this.repaint();
-						t.start(); //Make the AI take it's turn
+						//t.start(); //Make the AI take it's turn
 					}
 					
 				}
