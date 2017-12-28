@@ -31,6 +31,7 @@ public abstract class Piece implements Cloneable{
 	protected int player;				// This int will represent which team the piece is, 1 for yellow team, 
 									    // 2 for black team. 
 	protected boolean hasMoved;
+
 	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Piece(){
@@ -114,6 +115,8 @@ public abstract class Piece implements Cloneable{
 	// @param - Piece[][]b - the chess board.  a two dimensional array of pieces.
 	// return - boolean - true if the move is valid 
 	public abstract boolean isValidMoveSpecific(Location from, Location to, Piece[][]board);
+	
+	public abstract int getValue();
 	
 	// method: draw
 	// description: This method is used to draw the image onto the GraphicsPanel.  You shouldn't need to 

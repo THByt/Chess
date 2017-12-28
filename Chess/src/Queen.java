@@ -17,5 +17,10 @@ public class Queen extends Piece{
 		//Combining the functionality of a rook and a bishop
 		return (new Rook(player).isValidMoveSpecific(from, to, b)) || (new Bishop(player).isValidMoveSpecific(from, to, b));
 	}
+
+	@Override
+	public int getValue() {
+		return 9;
+	}
 		
 }

@@ -21,5 +21,10 @@ public class Knight extends Piece{
 		//Check if a piece is on the projected location
 		return b[to.getRow()][to.getColumn()] == null || b[to.getRow()][to.getColumn()].getPlayer()!=player;
 	}
+
+	@Override
+	public int getValue() {
+		return 3;
+	}
 		
 }

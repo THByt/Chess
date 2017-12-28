@@ -98,7 +98,6 @@ public class AI {
 	// Returns: int
 	private int score(Piece[][] board, int player, int d, int winner){
 		int score = 0;
-		int pieceScore = 0;//Score for piece count
 		
 		if(winner!=0){ //If they win give them a very large score so this move is chosen
 			return 1000000*(winner==1?1:-1)+(d*player==1?-10:10);
@@ -119,25 +118,7 @@ public class AI {
 		for(int c = 0; c <8; c++){ //See if that piece can make any valid moves
 			for (int r = 0; r<8; r++){
 				if(board[r][c]!=null){
-					switch(board[r][c].getClass().getName()){
-					case "Queen":
-						pieceScore=900;
-						break;
-					case "Rook":
-						pieceScore=500;
-						break;
-					case "Bishop":
-					case "Knight":
-						pieceScore=300;
-						break;
-					case "Pawn":
-						pieceScore=100;
-						break;
-					default:
-						pieceScore=0;
-						break;
-					}
-					score+=pieceScore*(board[r][c].getPlayer()==1?1:-1);
+					score+=board[r][c].getValue()*100*(board[r][c].getPlayer()==1?1:-1);
 				}
 			}
 		}
