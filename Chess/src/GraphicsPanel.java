@@ -52,6 +52,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private Timer t1;						// The timer that allows the AI to go after drawing the player's move
 	private Timer t2;
 	private Move lastMove;					// The last move that was made, for visualization purposes	
+	private long startTime;
 	
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
@@ -64,42 +65,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[4][5] = new Bishop(2);
 		board[5][3] = new Rook(2);
 		board[0][2] = new Rook(1);
-//		
-//		for(int i = 0; i<6; i++){		
-//			 			double random = Math.random();		
-//			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
-//			 			Piece p = null;		
-//			 			if(i == 5){		
-//			 				p = new King(1);		
-//			 			}else if(random<0.4){		
-//			 				p = new Bishop(1);		
-//			 			}else if(random<0.6){	
-//			 				p = new Rook(1);		
-//			 			}else if(random<0.65){	
-//			 				p = new Queen(1);		
-//			 			}else if(random<1){	
-//			 				p = new Knight(1);		
-//			 			}		
-//			 			board[l.getRow()][l.getColumn()] = p;		
-//			 		}		
-//			 				
-//			 		for(int i = 0; i<6; i++){		
-//			 			double random = Math.random();		
-//			 			Location l = new Location((int) (Math.random()*8),(int) (Math.random()*8));		
-//			 			Piece p = null;		
-//			 			if(i == 5){		
-//			 				p = new King(2);		
-//			 			}else if(random<0.4){		
-//			 				p = new Bishop(2);		
-//			 			}else if(random<0.6){	
-//			 				p = new Rook(2);		
-//			 			}else if(random<0.65){	
-//			 				p = new Queen(2);		
-//			 			}else if(random<1){	
-//			 				p = new Knight(2);		
-//			 			}		
-//			 			board[l.getRow()][l.getColumn()] = p;		
-//			 		}
 
 		player = 1; //Player 1 starts
 		state = State.START; //Start on opening screen
@@ -107,7 +72,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		ai1 = new AI(1);		//Create a new AI for player 2
 
 		lastMove = new Move(new Location(-1,-1), new Location(-1,-1)); //At begining there was no last move;
-		long startTime = System.currentTimeMillis();
+		
 		t1 = new Timer(0,new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -142,8 +107,24 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			}
 		});
 		
-		t1.start();
+		startTime = System.currentTimeMillis();
 		
+		//lastMove = ai1.getMove(board);
+		//lastMove = ai1.getMove(board);
+		System.out.println(System.currentTimeMillis()-startTime);
+		startTime = System.currentTimeMillis();
+		for(int i = 0; i<100000; i++){
+			//AI.getMoves(board, 2);
+		}
+		System.out.println(System.currentTimeMillis()-startTime);
+		
+		startTime = System.currentTimeMillis();
+		for(int i = 0; i<40000; i++){
+			//board[6][5].getMoves(new Location(6,5), board);
+		}
+		System.out.println(System.currentTimeMillis()-startTime);
+		//System.exit(0);
+		t1.start();
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
 	}
@@ -249,6 +230,14 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				}
 			}
 		}
+		
+//		if(selected){
+//			Piece p = Piece.getPieceAtLocation(from, board);
+//			for(Move m: p.getMoves(from, board)){
+//				g2.setColor(new Color(100,255,100));
+//				g2.fillOval(m.getTo().getColumn()*SQUARE_WIDTH+10,m.getTo().getRow()*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
+//			}
+//		}
 		
 		//Draw the pieces
 		for(int c = 0; c <8; c++){

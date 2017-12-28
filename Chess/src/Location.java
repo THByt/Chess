@@ -28,6 +28,18 @@ public class Location {
 		return column;
 	}
 	
+	public Location add(Location l){
+		return new Location(row + l.row, column + l.column);
+	}
+	
+	// Method: inBounds
+	// Description: Returns true if a locaiton is on the board
+	// Params: none
+	// Returns: boolean: is the location on the board
+	public boolean inBounds(){
+		return row>-1 && row <8 && column<8 && column>-1;
+	}
+	
 	public void setRow(int r){
 		row = r;
 	}

@@ -18,22 +18,11 @@ public class AI {
 	// Params: Piece[][] b: the board that the AI will make a move for
 	// Returns: void
 	public Move getMove(Piece[][] board){
-		//System.out.println(getMoves(board));
-		long time = System.currentTimeMillis();
-		int pieceScore = 0;
-		for(int c = 0; c <8; c++){ //See if that piece can make any valid moves
-			for (int r = 0; r<8; r++){
-				if(board[r][c]!=null){
-					pieceScore+=board[r][c].getValue()*100*(board[r][c].getPlayer()==1?1:-1);
-				}
-			}
-		}
-		minimax(board, player, 0, Integer.MIN_VALUE,Integer.MAX_VALUE, pieceScore);
-		System.out.println(System.currentTimeMillis()-time);
+		minimax(board, player, 0, Integer.MIN_VALUE,Integer.MAX_VALUE);
 		return choice;
 	}
 	
-	public int minimax(Piece[][] board, int player, int d, int alpha, int beta, int pieceScore){
+	public int minimax(Piece[][] board, int player, int d, int alpha, int beta){
 		//Do thing where it doesn't calculate move list each time
 		int depthLimit = 4;
 		int winner = -1; //Who won, used to do less calculations
@@ -44,7 +33,7 @@ public class AI {
 			winner = 3-player;
 		}
 
-		if(winner>=0) {return score(board,player,d,winner, pieceScore);}
+		if(winner>=0) {return score(board,player,d,winner);}
 		
 		ArrayList<Integer> scores = new ArrayList<Integer>();
 		ArrayList<Move> moves = getMoves(board, player);
@@ -68,10 +57,7 @@ public class AI {
 			
 			//generate board with new move
 			makeMove(newBoard, move);
-			if(Piece.getPieceAtLocation(move.getTo(), board)!=null){
-				pieceScore-=Piece.getPieceAtLocation(move.getTo(), board).getValue()*100*(player==2?1:-1);
-			}
-			int value = minimax(newBoard,3-player,d+1,alpha,beta, pieceScore);
+			int value = minimax(newBoard,3-player,d+1,alpha,beta);
 			//prune based on alpha beta values
 			if(player == 1 && value > alpha){
 				alpha = value;
@@ -83,7 +69,7 @@ public class AI {
 			}
 			scores.add(value);
 		}
-		if(d==0)System.out.println(scores.toString());
+		//if(d==0)System.out.println(scores.toString());
 		
 		//find max or min score(player 1 wants max, 2 min)
 		//set choice equal to that move, when everything ends this is the move the AI will make
@@ -107,7 +93,7 @@ public class AI {
 	// Description: Scores the board. If the board favors player 1, the number will be high. If it favors player two, the number will be low
 	// Params:
 	// Returns: int
-	private int score(Piece[][] board, int player, int d, int winner, int pieceScore){
+	private int score(Piece[][] board, int player, int d, int winner){
 		int score = 0;
 		
 		if(winner!=0){ //If they win give them a very large score so this move is chosen
@@ -126,14 +112,13 @@ public class AI {
 			}
 		}
 		
-//		for(int c = 0; c <8; c++){ //See if that piece can make any valid moves
-//			for (int r = 0; r<8; r++){
-//				if(board[r][c]!=null){
-//					score+=board[r][c].getValue()*100*(board[r][c].getPlayer()==1?1:-1);
-//				}
-//			}
-//		}
-		score+=pieceScore;
+		for(int c = 0; c <8; c++){ 
+			for (int r = 0; r<8; r++){
+				if(board[r][c]!=null){
+					score+=board[r][c].getValue()*100*(board[r][c].getPlayer()==1?1:-1);
+				}
+			}
+		}
 		score+=getMoves(board, 3-player).size()*(player==1?-1:1); //Punish opponent having lots of mobility
 		score+=(d*player==1?-10:10);//Penalize taking longer to win
 		return score;
@@ -143,7 +128,7 @@ public class AI {
 	// Description: Returns an ArrayList of all valid moves
 	// Params: Piece[][] board: the board
 	// Returns: ArrayList<Move>
-	private ArrayList<Move> getMoves(Piece[][] board, int player){
+	public static ArrayList<Move> getMoves(Piece[][] board, int player){
 		ArrayList<Move> moves = new ArrayList<Move>();
 		
 		for(int c1 = 0; c1 <8; c1++){ //Look through all squares
