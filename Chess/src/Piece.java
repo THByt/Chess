@@ -82,35 +82,37 @@ public abstract class Piece implements Cloneable{
 		
 		//If they are in check after the move it is not valid
 		//Copy the board
-//		Piece[][] boardCopy = new Piece[8][8];
-//		for(int c = 0; c <8; c++){
-//			for (int r = 0; r<8; r++){
-//				if(board[r][c]!=null){
-//					try {
-//						boardCopy[r][c] = (Piece) board[r][c].clone();
-//					} catch (CloneNotSupportedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		}
-		Piece taken = null;
-		try {
-			if(board[to.getRow()][to.getColumn()]!=null){
-				taken = (Piece) board[to.getRow()][to.getColumn()].clone();
+		Piece[][] boardCopy = new Piece[8][8];
+		for(int c = 0; c <8; c++){
+			for (int r = 0; r<8; r++){
+				if(board[r][c]!=null){
+					try {
+						boardCopy[r][c] = (Piece) board[r][c].clone();
+					} catch (CloneNotSupportedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
 		}
+//		Piece taken = null;
+//		try {
+//			if(board[to.getRow()][to.getColumn()]!=null){
+//				taken = (Piece) board[to.getRow()][to.getColumn()].clone();
+//			}
+//		} catch (CloneNotSupportedException e) {
+//			e.printStackTrace();
+//		}
 		//Make the move (virtually) to test it
-		board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);
-		board[from.getRow()][from.getColumn()] = null;
+//		board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);
+//		board[from.getRow()][from.getColumn()] = null;
+		boardCopy[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, boardCopy);
+		boardCopy[from.getRow()][from.getColumn()] = null;
 //		return true; //TODO reenable
-		boolean ret =  !GraphicsPanel.isInCheck(player, board) || //If they are still in check the move is not valid 
+		boolean ret = !GraphicsPanel.isInCheck(player, boardCopy) || //If they are still in check the move is not valid 
 				(Piece.getPieceAtLocation(to, board) instanceof King && //Unless the move captures the king. That is always valid. (see comment below)
 						Piece.getPieceAtLocation(to, board).getPlayer()==3-player); 
-		board[from.getRow()][from.getColumn()] = Piece.getPieceAtLocation(to, board);
-		board[to.getRow()][to.getColumn()] = taken;
+//		board[from.getRow()][from.getColumn()] = Piece.getPieceAtLocation(to, board);
+//		board[to.getRow()][to.getColumn()] = taken;
 		return ret;
 		// This fixes a bug where a piece thought it was valid to put the other king into check, instead of protecting its own king. 
 		// Because the other player thought it couldn't capture the king because it would still be in check, the other player thought
@@ -129,7 +131,7 @@ public abstract class Piece implements Cloneable{
 	
 	public abstract int getValue();
 	
-	//public abstract ArrayList<Move> getMoves(Location from, Piece[][] board);
+	public abstract ArrayList<Move> getMoves(Location from, Piece[][] board);
 	
 	// method: draw
 	// description: This method is used to draw the image onto the GraphicsPanel.  You shouldn't need to 

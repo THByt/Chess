@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 // Class: Rook
 // Written by: Ethan Frank
 // Date: Dec 21, 2017
@@ -45,5 +47,79 @@ public class Rook extends Piece{
 	@Override
 	public int getValue() {
 		return 5;
+	}
+
+	@Override
+	public ArrayList<Move> getMoves(Location from, Piece[][] board) {
+		ArrayList<Move> moves = new ArrayList<Move>();
+		
+		for(int r = from.getRow()+1; r<8; r++){
+			
+			if(Piece.getPieceAtLocation(new Location(r, from.getColumn()), board)==null){
+				moves.add(new Move(from, new Location(r, from.getColumn())));
+			}else if(Piece.getPieceAtLocation(new Location(r, from.getColumn()), board).getPlayer()==3-player){
+				moves.add(new Move(from, new Location(r, from.getColumn())));
+				break;
+			}else{
+				break;
+			}
+		}
+		for(int r = from.getRow()-1; r>-1; r--){
+			if(Piece.getPieceAtLocation(new Location(r, from.getColumn()), board)==null){
+				moves.add(new Move(from, new Location(r, from.getColumn())));
+			}else if(Piece.getPieceAtLocation(new Location(r, from.getColumn()), board).getPlayer()==3-player){
+				moves.add(new Move(from, new Location(r, from.getColumn())));
+				break;
+			}else{
+				break;
+			}
+		}
+		for(int c = from.getColumn()-1; c>-1; c--){
+			if(Piece.getPieceAtLocation(new Location(from.getRow(), c), board)==null){
+				moves.add(new Move(from, new Location(from.getRow(), c)));
+			}else if(Piece.getPieceAtLocation(new Location(from.getRow(), c), board).getPlayer()==3-player){
+				moves.add(new Move(from, new Location(from.getRow(), c)));
+				break;
+			}else{
+				break;
+			}
+		}
+		for(int c = from.getColumn()+1; c<8; c++){
+			if(Piece.getPieceAtLocation(new Location(from.getRow(), c), board)==null){
+				moves.add(new Move(from, new Location(from.getRow(), c)));
+			}else if(Piece.getPieceAtLocation(new Location(from.getRow(), c), board).getPlayer()==3-player){
+				moves.add(new Move(from, new Location(from.getRow(), c)));
+				break;
+			}else{
+				break;
+			}
+		}
+		
+		for(int i = moves.size()-1; i>-1; i--){
+			Location to = moves.get(i).getTo();
+			Piece[][] boardCopy = new Piece[8][8];
+			for(int c = 0; c <8; c++){
+				for (int r = 0; r<8; r++){
+					if(board[r][c]!=null){
+						try {
+							boardCopy[r][c] = (Piece) board[r][c].clone();
+						} catch (CloneNotSupportedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			//Make the move (virtually) to test it
+			boardCopy[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, boardCopy);
+			boardCopy[from.getRow()][from.getColumn()] = null;
+
+			if(!(!GraphicsPanel.isInCheck(player, boardCopy) || //If they are still in check the move is not valid 
+				(Piece.getPieceAtLocation(to, board) instanceof King && //Unless the move captures the king. That is always valid. (see comment below)
+						Piece.getPieceAtLocation(to, board).getPlayer()==3-player))){
+				moves.remove(i);
+			}
+		}
+		return moves;
 	}
 }

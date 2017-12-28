@@ -28,5 +28,9 @@ public class Move {
 		return "("+from + "_" + to+")";
 	}
 	
+	public boolean equals(Object o){
+		Move m = (Move) o;
+		return m.getTo().equals(to) && m.getFrom().equals(from);
+	}
 	
 }

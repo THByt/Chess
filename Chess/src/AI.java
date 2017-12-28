@@ -40,7 +40,6 @@ public class AI {
 		
 		//for every move
 		for(Move move: moves){
-			
 			//copy board
 			Piece[][] newBoard = new Piece[8][8];
 			for(int c = 0; c <8; c++){
@@ -69,7 +68,7 @@ public class AI {
 			}
 			scores.add(value);
 		}
-		//if(d==0)System.out.println(scores.toString());
+		if(d==0)System.out.println(scores.toString());
 		
 		//find max or min score(player 1 wants max, 2 min)
 		//set choice equal to that move, when everything ends this is the move the AI will make
@@ -119,8 +118,8 @@ public class AI {
 				}
 			}
 		}
-		score+=getMoves(board, 3-player).size()*(player==1?-1:1); //Punish opponent having lots of mobility
-		score+=(d*player==1?-10:10);//Penalize taking longer to win
+		score+=getMoves(board, 3-player).size()*(player==1?-1:1)*10; //Punish opponent having lots of mobility
+		score+=(d*player==1?-1:1);//Penalize taking longer to win
 		return score;
 	}
 	
@@ -130,22 +129,17 @@ public class AI {
 	// Returns: ArrayList<Move>
 	public static ArrayList<Move> getMoves(Piece[][] board, int player){
 		ArrayList<Move> moves = new ArrayList<Move>();
-		
+
 		for(int c1 = 0; c1 <8; c1++){ //Look through all squares
 			for (int r1 = 0; r1<8; r1++){
 				Location from = new Location(r1,c1);
 				Piece p = Piece.getPieceAtLocation(from, board);
 				if(p!=null && p.getPlayer()==player){ //If there is a piece on player's team
-					for(int c2 = 0; c2 <8; c2++){ //See if that piece can make any valid moves
-						for (int r2 = 0; r2<8; r2++){
-							if(p.isValidMove(from, new Location(r2,c2), board)){//If it can add it to the list
-								moves.add(new Move(from, new Location(r2,c2)));
-							}
-						}
-					}
+					moves.addAll(p.getMoves(from, board));
 				}
 			}
 		}
+		
 		return moves;
 	}
 	

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 // Class: Queen
 // Written by: Isaac Hu
 // Date: Dec 21, 2017
@@ -21,6 +23,13 @@ public class Queen extends Piece{
 	@Override
 	public int getValue() {
 		return 9;
+	}
+
+	@Override
+	public ArrayList<Move> getMoves(Location from, Piece[][] board) {
+		ArrayList<Move> moves = new Rook(player).getMoves(from, board);
+		moves.addAll(new Bishop(player).getMoves(from, board));
+		return moves;
 	}
 		
 }
