@@ -45,16 +45,31 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 
-		board[3][4] = new Rook(1);
-		board[1][2] = new Rook(1);
-		board[7][6] = new Rook(1);
-		board[2][3] = new Bishop(2);
-		board[5][4] = new King(1);
-		board[1][5] = new King(2);
-		board[2][4] = new Knight(1);
-		board[7][2] = new Knight(2);
-		board[6][6] = new Rook(2);
-		board[0][0] = new Queen(1);
+		//Black non-pawns
+		board[0][0] = new Rook(2);
+		board[0][1] = new Knight(2);
+		board[0][2] = new Bishop(2);
+		board[0][3] = new Queen(2);
+		board[0][4] = new King(2);
+		board[0][5] = new Bishop(2);
+		board[0][6] = new Knight(2);
+		board[0][7] = new Rook(2);
+		
+		//Black pawns
+		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
+		
+		//White pawns
+		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
+		
+		//White non-pawns
+		board[7][0] = new Rook(1);
+		board[7][1] = new Knight(1);
+		board[7][2] = new Bishop(1);
+		board[7][3] = new Queen(1);
+		board[7][4] = new King(1);
+		board[7][5] = new Bishop(1);
+		board[7][6] = new Knight(1);
+		board[7][7] = new Rook(1);
 
 		player = 1;
 		state = State.START;
