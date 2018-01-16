@@ -7,6 +7,8 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import src.main.java.com.adonax.audiocue.AudioCue;
+
 // Class: SoundEffects
 // Written by: Ethan Frank
 // Date: Dec 5, 2017
@@ -14,30 +16,40 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public enum SoundEffects {
 	ERROR("sounds/error.wav");
 	
-	private Clip clip; //Each sound effect gets own clip.
+	private AudioCue myAudioCue;	// Each sound effect gets it's own clip
+	private int handle;
 	
-	SoundEffects(String soundFileName) {
-	      try {
-	         // Use URL (instead of File) to read from disk and JAR.
-	         URL url = this.getClass().getClassLoader().getResource(soundFileName);
-	         // Set up an audio input stream piped from the sound file.
-	         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
-	         // Get a clip resource.
-	         clip = AudioSystem.getClip();
-	         // Open audio clip and load samples from the audio input stream.
-	         clip.open(audioInputStream);
-	      } catch (UnsupportedAudioFileException e) {
-	         e.printStackTrace();
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	      } catch (LineUnavailableException e) {
-	         e.printStackTrace();
-	      }
-	   }
+	//Constructor
+	SoundEffects(String soundFileName){
+		URL url = this.getClass().getResource(soundFileName);
+		try {
+			myAudioCue = AudioCue.makeStereoCue(url, 1);
+			myAudioCue.open();  // see API for parameters to override "sound thread" configuration default
+			handle = myAudioCue.obtainInstance();
+			myAudioCue.setVolume(handle, 1);
+		} catch (UnsupportedAudioFileException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //allows 4 concurrent
+ catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
-	   // Play or Re-play the sound effect from the beginning, by rewinding.
-	   public void play() {
-	         clip.setFramePosition(0); // rewind to the beginning
-	         clip.start();     // Start playing
-	   }
+	// Method: play
+	// Description: Plays a sound effect. Restarts if sound effect already playing
+	// Params: none
+	// Returns: void
+	public void play(){
+		
+		if(myAudioCue.getIsPlaying(handle)){
+			myAudioCue.stop(handle);
+		}
+			myAudioCue.setFramePosition(handle, 0);
+			myAudioCue.start(handle);
+	}
 }

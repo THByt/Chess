@@ -58,11 +58,11 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[0][6] = new Knight(2);
 		board[0][7] = new Rook(2);
 		
-		//Black pawns
-		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
-		
-		//White pawns
-		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
+//		//Black pawns
+//		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
+//		
+//		//White pawns
+//		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
 		
 		//White non-pawns
 		board[7][0] = new Rook(1);
@@ -223,36 +223,45 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
-		int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
-		Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
-		if(!selected && p!=null && p.getPlayer()==player){//should select a piece
-			from = new Location(r,c);
-			selected = true;
-		}else if(!selected){//They did not click on a valid piece
-			SoundEffects.ERROR.play();
-		}else if(selected){//should select a place to go
-		
-			to = new Location(r,c);
-			if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
-				board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
-				board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
-        
-        if(isCheckMate(3-player, board)){//Check if game over
-          state = State.GAMEOVER;
-        }else{
-          player = 3-player; //other player's turn
-          lastClickTurnSwitch = true;
-        }
-        selected = false;
-			}else if(!from.equals(to)){
-				SoundEffects.ERROR.play();
-			}
-			this.repaint();
+		switch(state){
+		case START:
+			state = State.PLAY;
 			break;
+		case PLAY:
+			int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
+			int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
+			Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
+			if(!selected && p!=null && p.getPlayer()==player){//should select a piece
+				from = new Location(r,c);
+				selected = true;
+			}else if(!selected){//They did not click on a valid piece
+				SoundEffects.ERROR.play();
+			}else if(selected){//should select a place to go
+				to = new Location(r,c);
+				if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
+					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
+					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
+		        
+			        if(isCheckMate(3-player, board)){//Check if game over
+			          state = State.GAMEOVER;
+			        }else{
+			          player = 3-player; //other player's turn
+			          lastClickTurnSwitch = true;
+			        }
+			        selected = false;
+				}else if(!from.equals(to)){//If invalid move selected that is not clicking the selected piece
+					SoundEffects.ERROR.play(); //play error sound
+					selected = false;		   // unselect it
+				}else{						//If they've clicked their piece again
+					selected = false;		//unselect it
+				}
+				break;	
+			}
+			
 		case GAMEOVER:
 			break;
 		}
+		repaint();
 	}
 	
 	// Method: drawCenteredText
