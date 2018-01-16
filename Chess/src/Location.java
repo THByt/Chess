@@ -40,4 +40,8 @@ public class Location {
 		Location l = (Location) o;
 		return row==l.getRow() && column==l.getColumn();
 	}
+	
+	public String toString(){
+		return row + ", " + column;
+	}
 }

@@ -13,11 +13,9 @@ public class Queen extends Piece{
 	
 	//A Queen can only move within the specifications of a rook or a bishop
 	@Override
-	public boolean isValidMove(Location from, Location to, Piece[][] b) {
-		
-		
+	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
 		//Combining the functionality of a rook and a bishop
-		return (new Rook(player).isValidMove(from, to, b)) || (new Bishop(player).isValidMove(from, to, b));
+		return (new Rook(player).isValidMoveSpecific(from, to, b)) || (new Bishop(player).isValidMoveSpecific(from, to, b));
 	}
 		
 }

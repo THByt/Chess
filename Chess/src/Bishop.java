@@ -10,9 +10,8 @@ public class Bishop extends Piece{
 
 	//Bishops move diagonally. This means abs(delta X) = abs(delta Y) 
 	@Override
-	public boolean isValidMove(Location from, Location to, Piece[][] b) {
-		if(!(Math.abs(from.getRow()-to.getRow()) == Math.abs(from.getColumn()-to.getColumn())
-				&& !to.equals(from))){ return false;} //can't move there
+	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
+		if(!(Math.abs(from.getRow()-to.getRow()) == Math.abs(from.getColumn()-to.getColumn()))){return false;} //can't move there
 
 		int x_way = (int) Math.signum(to.getColumn()-from.getColumn()); //which direction to go in the x direction to get from here to there
 		int y_way = (int) Math.signum(to.getRow()-from.getRow());		//which direction to go in the y direction
