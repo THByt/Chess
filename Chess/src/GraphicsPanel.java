@@ -58,11 +58,11 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[0][6] = new Knight(2);
 		board[0][7] = new Rook(2);
 		
-//		//Black pawns
-//		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
-//		
-//		//White pawns
-//		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
+		//Black pawns
+		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
+		
+		//White pawns
+		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
 		
 		//White non-pawns
 		board[7][0] = new Rook(1);
