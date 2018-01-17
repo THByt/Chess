@@ -249,11 +249,13 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			          lastClickTurnSwitch = true;
 			        }
 			        selected = false;
+				}else if(p!=null && p.getPlayer()==player && !from.equals(to)){//If they click another one of their pieces
+					from = new Location(r,c); //select it
 				}else if(!from.equals(to)){//If invalid move selected that is not clicking the selected piece
 					SoundEffects.ERROR.play(); //play error sound
 					selected = false;		   // unselect it
-				}else{						//If they've clicked their piece again
-					selected = false;		//unselect it
+				}else{ //they click their piece again
+					selected = false; //unselect it
 				}
 				break;	
 			}
