@@ -104,7 +104,7 @@ public class AI {
 			return 1000000*(winner==1?1:-1)+(d*player==1?-10:10);
 		}
 		
-		if(GraphicsPanel.isInCheck(2, board)){
+		if(GraphicsPanel.isInCheck(2, board)){ //TODO shouldn't this be inside the winner!=0 statement.
 			score+=50000;
 			if(GraphicsPanel.isInCheckMate(2, board)){
 				score+=100000;
