@@ -19,8 +19,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.awt.Color;
 import javax.swing.JPanel;
+import javazoom.jl.decoder.JavaLayerException;
 
 enum State{
 	START, PLAY, GAMEOVER
@@ -30,6 +32,7 @@ enum State{
 // Written by: Ethan Frank
 // Date: Dec 24, 2017
 // Description:
+
 public class GraphicsPanel extends JPanel implements MouseListener{
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
 	private static Location from;   			    // holds the coordinates of the square that the user would like to move from.
@@ -73,6 +76,22 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 		player = 1;
 		state = State.START;
+		
+		//play music
+		new Thread(new Runnable(){ 
+			javazoom.jl.player.Player player;
+			@Override
+			public void run() {
+				while(true){
+					try{
+						player = new javazoom.jl.player.Player(getClass().getResource("sounds/background_music.mp3").openStream());
+						player.play();
+					} catch (JavaLayerException | IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}	
+		}).start();
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
@@ -204,41 +223,45 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//do different stuff depending on state
 		switch(state){
 		case START:
-			state = State.PLAY; //Start game on click
-			this.repaint(); //clears text from screen
+			state = State.PLAY;
 			break;
 		case PLAY:
 			int r = Math.max(Math.min((e.getY())/SQUARE_WIDTH, 7), 0); // use math to figure out the row and column that was clicked.
 			int c = Math.max(Math.min((e.getX())/SQUARE_WIDTH, 7), 0);
 			Piece p = Piece.getPieceAtLocation(new Location(r,c), board);
-			lastClickTurnSwitch = false;
 			if(!selected && p!=null && p.getPlayer()==player){//should select a piece
 				from = new Location(r,c);
 				selected = true;
+			}else if(!selected){//They did not click on a valid piece
+				SoundEffects.ERROR.play();
 			}else if(selected){//should select a place to go
 				to = new Location(r,c);
 				if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
 					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
 					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
-					
-					if(isCheckMate(3-player, board)){//Check if game over
-						state = State.GAMEOVER;
-					}else{
-						player = 3-player; //other player's turn
-						lastClickTurnSwitch = true;
-					}
-					
+		        
+			        if(isCheckMate(3-player, board)){//Check if game over
+			          state = State.GAMEOVER;
+			        }else{
+			          player = 3-player; //other player's turn
+			          lastClickTurnSwitch = true;
+			        }
+			        selected = false;
+				}else if(!from.equals(to)){//If invalid move selected that is not clicking the selected piece
+					SoundEffects.ERROR.play(); //play error sound
+					selected = false;		   // unselect it
+				}else{						//If they've clicked their piece again
+					selected = false;		//unselect it
 				}
-				selected = false;
+				break;	
 			}
-			this.repaint();
-			break;
+			
 		case GAMEOVER:
 			break;
 		}
+		repaint();
 	}
 	
 	// Method: drawCenteredText
