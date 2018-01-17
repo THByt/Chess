@@ -265,6 +265,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 240, Color.BLACK);
 			break;
 		case PLAY:
+			
 			if(lastClickTurnSwitch && isInCheck(player, board)){
 				drawCenteredText(g2, "CHECK", SQUARE_WIDTH*4-20, 240, Color.BLACK);
 			}
@@ -279,6 +280,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		lastClickTurnSwitch = false;
 		switch(state){
 		case START:
 			state = State.PLAY;
@@ -307,11 +309,13 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			          lastClickTurnSwitch = true;
 			        }
 			        selected = false;
+				}else if(p!=null && p.getPlayer()==player && !from.equals(to)){//If they click another one of their pieces
+					from = new Location(r,c); //select it
 				}else if(!from.equals(to)){//If invalid move selected that is not clicking the selected piece
 					SoundEffects.ERROR.play(); //play error sound
 					selected = false;		   // unselect it
-				}else{						//If they've clicked their piece again
-					selected = false;		//unselect it
+				}else{ //they click their piece again
+					selected = false; //unselect it
 				}
 			}
 			break;		

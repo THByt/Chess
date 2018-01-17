@@ -30,8 +30,8 @@ public abstract class Piece implements Cloneable{
 	
 	protected int player;				// This int will represent which team the piece is, 1 for yellow team, 
 									    // 2 for black team. 
-	protected boolean hasMoved;
-	
+	protected int moved;				//Times moved
+
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Piece(){
 		this("pawn", 1);
@@ -132,6 +132,14 @@ public abstract class Piece implements Cloneable{
 
 	public void setPlayer(int player) {
 		this.player = player;
+	}
+
+	public int getMoved() {
+		return moved;
+	}
+
+	public void setMoved(int moved) {
+		this.moved = moved;
 	}
 	
 	public static Piece getPieceAtLocation(Location l, Piece[][] b){
