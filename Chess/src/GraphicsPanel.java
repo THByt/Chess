@@ -209,6 +209,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 240, Color.BLACK);
 			break;
 		case PLAY:
+			
 			if(lastClickTurnSwitch && isInCheck(player, board)){
 				drawCenteredText(g2, "CHECK", SQUARE_WIDTH*4-20, 240, Color.BLACK);
 			}
@@ -223,6 +224,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		lastClickTurnSwitch = false;
 		switch(state){
 		case START:
 			state = State.PLAY;
