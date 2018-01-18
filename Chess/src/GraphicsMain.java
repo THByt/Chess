@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GraphicsMain extends JFrame{
-	//hello
+	
 	public static void main(String[] args){
 		GraphicsMain window = new GraphicsMain();
 	    JPanel p = new JPanel();

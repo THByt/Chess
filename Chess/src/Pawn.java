@@ -14,20 +14,19 @@ public class Pawn extends Piece{
 	// Description: A Pawn can only move forward if there is no piece blocking, forward twice if the above conditions are met, and it is the first turn in which it is moving, and diagonally forward if it is capturing a piece.
 	@Override
 	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
-		
-		if(!((from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0) && !to.equals(from))) return false; //can't move there
+		return true;
+		/*if(!((from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0) && !to.equals(from))) return false; //can't move there
 		
 		//Checking if the piece may move forward twice due to its first time being moved
 		System.out.println(moved);
-		if(moved == 0) {
-			System.out.println("X");
-			if(from.getColumn() == to.getColumn() && from.getRow() == (to.getRow() + (((player - 1.5)*4))) //Checks if the 'to' is the double move position
-					//&& ((b[(int) (to.getRow() + (((player - 1.5)*2)))][from.getColumn()] == null))
-					){//&& ((b[(int) (to.getRow() + (((player - 1.5)*4)))][from.getColumn()] == null))) {
+		if(moved == 0
+				&& from.getColumn() == to.getColumn() && from.getRow() == (to.getRow() + (((player - 1.5)*4)))
+				&& ((b[(int) (to.getRow() + (((player - 1.5)*2)))][from.getColumn()] == null))
+				&& ((b[(int) (to.getRow() + (((player - 1.5)*4)))][from.getColumn()] == null))) {
 					moved++;
 					return true;
-			}
 		}
+		
 		//Checking if it is attempting to move forward once
 		if(from.getColumn() == to.getColumn() && from.getRow() == (to.getRow() + (((player - 1.5)*2))) //Checks if the 'to' is the single move position
 				&& ((b[(int) (to.getRow() + (((player - 1.5)*2)))][from.getColumn()] == null))) {
@@ -45,7 +44,7 @@ public class Pawn extends Piece{
 			}
 		}
 		return false;
-		
+		*/
 	}
 		
 }
