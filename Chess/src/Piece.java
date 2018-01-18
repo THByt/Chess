@@ -45,6 +45,7 @@ public abstract class Piece implements Cloneable{
 		String imagePath = "images2/" + piece + player + ".png";
 		setImageIcon(imagePath);
 		this.setPlayer(player);			
+		moved = 0;
 	}
 	
 	// method: Piece's packed constructor
