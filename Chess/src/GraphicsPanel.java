@@ -22,7 +22,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.awt.Color;
 import javax.swing.JPanel;
-//import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.decoder.JavaLayerException;
 
 enum State{
 	START, PLAY, GAMEOVER
@@ -45,7 +45,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private boolean lastClickTurnSwitch; 	// True if the last click moved a piece. Used to draw "check" until they click again
 	
 	public GraphicsPanel(){
-		System.out.println("sdjks");
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 
