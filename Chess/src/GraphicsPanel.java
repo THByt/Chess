@@ -22,7 +22,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.awt.Color;
 import javax.swing.JPanel;
-//import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.decoder.JavaLayerException;
 
 enum State{
 	START, PLAY, GAMEOVER
@@ -79,20 +79,20 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		state = State.START;
 		
 		//play music
-//		new Thread(new Runnable(){ 
-//			javazoom.jl.player.Player player;
-//			@Override
-//			public void run() {
-//				while(true){
-//					try{
-//						player = new javazoom.jl.player.Player(getClass().getResource("sounds/background_music.mp3").openStream());
-//						player.play();
-//					} catch (JavaLayerException | IOException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			}	
-//		}).start();
+		new Thread(new Runnable(){ 
+			javazoom.jl.player.Player player;
+			@Override
+			public void run() {
+				while(true){
+					try{
+						player = new javazoom.jl.player.Player(getClass().getResource("sounds/background_music.mp3").openStream());
+						player.play();
+					} catch (JavaLayerException | IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}	
+		}).start();
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
