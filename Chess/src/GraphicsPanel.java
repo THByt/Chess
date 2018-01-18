@@ -45,6 +45,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private boolean lastClickTurnSwitch; 	// True if the last click moved a piece. Used to draw "check" until they click again
 	
 	public GraphicsPanel(){
+
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 
@@ -224,6 +225,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+
 		lastClickTurnSwitch = false;
 		switch(state){
 		case START:

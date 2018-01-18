@@ -14,7 +14,7 @@ public class Pawn extends Piece{
 	// Description: A Pawn can only move forward if there is no piece blocking, forward twice if the above conditions are met, and it is the first turn in which it is moving, and diagonally forward if it is capturing a piece.
 	@Override
 	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
-		return true;
+		return false;
 		/*if(!((from.getRow()-to.getRow()==0||from.getColumn()-to.getColumn()==0) && !to.equals(from))) return false; //can't move there
 		
 		//Checking if the piece may move forward twice due to its first time being moved
