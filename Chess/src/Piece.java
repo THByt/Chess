@@ -146,4 +146,12 @@ public abstract class Piece implements Cloneable{
 	public static Piece getPieceAtLocation(Location l, Piece[][] b){
 		return b[l.getRow()][l.getColumn()];
 	}
+	
+	//Method: move
+	//Description: Adds one to 'moved'
+	//Parameters: none
+	//Return: void
+	public void move() {
+		moved++;
+	}
 }
