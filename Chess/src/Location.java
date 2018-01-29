@@ -36,6 +36,11 @@ public class Location {
 		column = c;
 	}
 	
+	public void flip(){
+		row = 7-row;
+		column = 7-column;
+	}
+	
 	public boolean equals(Object o){
 		Location l = (Location) o;
 		return row==l.getRow() && column==l.getColumn();

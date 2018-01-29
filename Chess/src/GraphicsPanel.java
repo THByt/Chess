@@ -12,6 +12,16 @@
 // add current player variable	
 // implement moving pieces 
 
+/* 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ */
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -59,11 +69,11 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[0][6] = new Knight(2);
 		board[0][7] = new Rook(2);
 		
-		//Black pawns
-		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
-		
-		//White pawns
-		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
+//		//Black pawns
+//		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
+//		
+//		//White pawns
+//		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
 		
 		//White non-pawns
 		board[7][0] = new Rook(1);
@@ -150,8 +160,67 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				}
 			}
 		}
-	
+		
 		return false;
+	}
+	
+	// Method: canACertainPlayerCastleButItOnlyChecksCertainConditionsBecauseOthersAreCheckedElsewhere
+	// Description: Says if a player can castle
+	// Params: Piece[][] board: the playing board, int player: the player to chekc to castle with
+	// Returns: boolean: can that player castle
+	public static boolean canACertainPlayerCastleButItOnlyChecksCertainConditionsBecauseOthersAreCheckedElsewhere(Piece[][] board, int player){
+		Location inbetweenPieceLocation1 = player == 1 ? new Location(7,5):new Location(0,2); 
+		Location inbetweenPieceLocation2 = player == 1 ? new Location(7,6):new Location(0,1); 
+		boolean squaresInbetweenInAttack = false;
+				
+		boolean cantCastle = Piece.getPieceAtLocation(inbetweenPieceLocation1, board) != null ||
+				Piece.getPieceAtLocation(inbetweenPieceLocation2, board) != null;
+		
+		for(int c = 0; c <8; c++){	
+			for (int r = 0; r<8; r++){
+				if(board[r][c]!=null && board[r][c].getPlayer()!=player){//opponent's piece
+					if(board[r][c].isValidMove(new Location(r,c), inbetweenPieceLocation1, board) ||
+							board[r][c].isValidMove(new Location(r,c), inbetweenPieceLocation2, board)){
+						squaresInbetweenInAttack = true;
+						break;
+					}
+				}
+			}
+		}
+		
+		cantCastle|=squaresInbetweenInAttack;
+		return !cantCastle;//That double negative though👌👌👌	
+	}
+	
+	// Method: movePiece
+	// Description: Moves a piece. Handles castling too.
+	// Params: Location from: location to move piece from. Location to: location to move piece to. Piece[][] board: board of pieces. 
+	// Returns: void
+	public static void movePiece(Location from, Location to, Piece[][] board){
+		Location kingLocation = new Location(7,4);
+		Location rookLocation = new Location(7,7);
+		Location kingLocationAfterMovingIfCastle = new Location(7,6);
+		Location rookLocationAfterMovingIfCastle = new Location(7,5);
+		
+		if(Piece.getPieceAtLocation(from, board).getPlayer()==2){
+			kingLocation.flip();
+			rookLocation.flip();
+			kingLocationAfterMovingIfCastle.flip();
+			rookLocationAfterMovingIfCastle.flip();
+		}
+		
+		boolean isCastle = from.equals(kingLocation) && to.equals(rookLocation);
+		board[from.getRow()][from.getColumn()].move(); //Add one to 'moved' variable
+		if(isCastle){
+			board[kingLocationAfterMovingIfCastle.getRow()][kingLocationAfterMovingIfCastle.getColumn()] = Piece.getPieceAtLocation(kingLocation, board);
+			board[rookLocationAfterMovingIfCastle.getRow()][rookLocationAfterMovingIfCastle.getColumn()] = Piece.getPieceAtLocation(rookLocation, board);
+			board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
+			board[to.getRow()][to.getColumn()] = null;	//remove piece from where it was
+		}else{
+			board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overwriting)
+			board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
+		}
+		
 	}
 	
 	// method: paintComponent
@@ -225,7 +294,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 		lastClickTurnSwitch = false;
 		switch(state){
 		case START:
@@ -243,10 +311,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			}else if(selected){//should select a place to go
 				to = new Location(r,c);
 				if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
-					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
-					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
-					board[to.getRow()][to.getColumn()].move(); //Add one to 'moved' variable
-		        
+					movePiece(from, to, board);//move the piece there
 			        if(isCheckMate(3-player, board)){//Check if game over
 			          state = State.GAMEOVER;
 			        }else{

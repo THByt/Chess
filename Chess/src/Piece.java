@@ -75,6 +75,9 @@ public abstract class Piece implements Cloneable{
 	// @param - boolean IsInCheck - should be true if the the player that the piece this method is called on is in check. 
 	// return - boolean - true if the move is valid 
 	public boolean isValidMove(Location from, Location to, Piece[][] board){
+		Location kingLocation = Piece.getPieceAtLocation(from, board).getPlayer()==1?new Location(7,4):new Location(0,3);
+		Location rookLocation = Piece.getPieceAtLocation(from, board).getPlayer()==1?new Location(7,7):new Location(0,0);
+		boolean isCastle = (from.equals(kingLocation) && to.equals(rookLocation)) || (to.equals(kingLocation) && from.equals(rookLocation));
 		boolean moveValid = !from.equals(to) && isValidMoveSpecific(from, to, board); //Check if the piece can technically move there
 		
 		if(!moveValid)return false; //If they can't move there end of story
@@ -98,9 +101,9 @@ public abstract class Piece implements Cloneable{
 		boardCopy[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, boardCopy);
 		boardCopy[from.getRow()][from.getColumn()] = null;
 		
-		return !GraphicsPanel.isInCheck(player, boardCopy) || //If they are still in check the move is not valid 
+		return (!GraphicsPanel.isInCheck(player, boardCopy) || //If they are still in check the move is not valid 
 				(Piece.getPieceAtLocation(to, board) instanceof King && //Unless the move captures the king. That is always valid. (see comment below)
-						Piece.getPieceAtLocation(to, board).getPlayer()==3-player); 
+						Piece.getPieceAtLocation(to, board).getPlayer()==3-player)) || isCastle; //But also not if the king is castling, because then the king doesn't actually go there
 		// This fixes a bug where a piece thought it was valid to put the other king into check, instead of protecting its own king. 
 		// Because the other player thought it couldn't capture the king because it would still be in check, the other player thought
 		// it was valid to check the other king because it would no longer be in "check" cause the other piece couldn't capture it's king.
