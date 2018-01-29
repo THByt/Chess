@@ -246,6 +246,21 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
 					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
 					board[to.getRow()][to.getColumn()].move(); //Add one to 'moved' variable
+					
+					//Check if a pawn must be changed into a queen
+					for(int i = 0; i < 8; i++) {
+						if(board[0][i] != null 
+						&& board[0][i].getPlayer()==1
+						&& board[0][i] instanceof Pawn)
+							board[0][i] = new Queen(1);
+					}
+					for(int i = 0; i < 8; i++) {
+						if(board[7][i] != null 
+						&& board[7][i].getPlayer()==2
+						&& board[7][i] instanceof Pawn)
+							board[7][i] = new Queen(2);
+					}
+							
 		        
 			        if(isCheckMate(3-player, board)){//Check if game over
 			          state = State.GAMEOVER;
