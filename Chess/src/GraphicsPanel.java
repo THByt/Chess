@@ -20,6 +20,13 @@
  * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
  * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
  * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
+ * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
  */
 
 import java.awt.Dimension;
@@ -53,6 +60,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private int player;						// current player (1 or 2)
 	private State state; 					// Current game state
 	private boolean lastClickTurnSwitch; 	// True if the last click moved a piece. Used to draw "check" until they click again
+	private boolean choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide; //Does the name not say enough?
 	
 	public GraphicsPanel(){
 
@@ -106,6 +114,9 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
+		
+		//Set choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide to false
+		choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = false;
 	}
 	
 	
@@ -312,6 +323,23 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				to = new Location(r,c);
 				if(Piece.getPieceAtLocation(from, board).isValidMove(from, to, board)){//if valid move selected
 					movePiece(from, to, board);//move the piece there
+					//Check if a pawn must be changed into a queen
+					for(int i = 0; i < 8; i++) {
+						if(board[0][i] != null 
+						&& board[0][i].getPlayer()==1
+						&& board[0][i] instanceof Pawn)
+							choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = true;
+							board[0][i] = new Queen(1);
+					}
+					for(int i = 0; i < 8; i++) {
+						if(board[7][i] != null 
+						&& board[7][i].getPlayer()==2
+						&& board[7][i] instanceof Pawn)
+							choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = true;
+							board[7][i] = new Queen(2);
+					}
+					
+					choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = false;
 			        if(isCheckMate(3-player, board)){//Check if game over
 			          state = State.GAMEOVER;
 			        }else{
