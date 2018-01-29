@@ -27,7 +27,7 @@ public class AI {
 	
 	public int minimax(Piece[][] board, int player, int d, int alpha, int beta){
 		//Do thing where it doesn't calculate move list each time
-		int depthLimit = 4;
+		int depthLimit = 2;
 		int winner = -1; //Who won, used to do less calculations
 		
 		if(d>=depthLimit){

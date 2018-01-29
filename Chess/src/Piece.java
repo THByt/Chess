@@ -45,6 +45,7 @@ public abstract class Piece implements Cloneable{
 		String imagePath = "images2/" + piece + player + ".png";
 		setImageIcon(imagePath);
 		this.setPlayer(player);			
+		moved = 0;
 	}
 	
 	// method: Piece's packed constructor
@@ -149,5 +150,12 @@ public abstract class Piece implements Cloneable{
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 	    return super.clone();
+	}
+	//Method: move
+	//Description: Adds one to 'moved'
+	//Parameters: none
+	//Return: void
+	public void move() {
+		moved++;
 	}
 }

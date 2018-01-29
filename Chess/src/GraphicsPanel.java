@@ -56,6 +56,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private Move lastMove;					// The last move that was made, for visualization purposes	
 	
 	public GraphicsPanel(){
+
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 
@@ -280,6 +281,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+
 		lastClickTurnSwitch = false;
 		switch(state){
 		case START:
@@ -302,6 +304,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					board[to.getRow()][to.getColumn()] = Piece.getPieceAtLocation(from, board);//move piece there (captures by overriding)
 					board[from.getRow()][from.getColumn()] = null;	//remove piece from where it was
 					lastMove = new Move(from, to);
+					board[to.getRow()][to.getColumn()].move(); //Add one to 'moved' variable
 			        if(isInCheckMate(3-player, board)){//Check if game over
 			          state = State.GAMEOVER;
 			        }else{
