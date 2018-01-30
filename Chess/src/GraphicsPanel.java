@@ -327,16 +327,18 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					for(int i = 0; i < 8; i++) {
 						if(board[0][i] != null 
 						&& board[0][i].getPlayer()==1
-						&& board[0][i] instanceof Pawn)
+						&& board[0][i] instanceof Pawn) {
 							choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = true;
 							board[0][i] = new Queen(1);
+						}
 					}
 					for(int i = 0; i < 8; i++) {
 						if(board[7][i] != null 
 						&& board[7][i].getPlayer()==2
-						&& board[7][i] instanceof Pawn)
+						&& board[7][i] instanceof Pawn) {
 							choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = true;
 							board[7][i] = new Queen(2);
+						}
 					}
 					
 					choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = false;
