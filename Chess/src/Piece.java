@@ -75,9 +75,10 @@ public abstract class Piece implements Cloneable{
 	// @param - boolean IsInCheck - should be true if the the player that the piece this method is called on is in check. 
 	// return - boolean - true if the move is valid 
 	public boolean isValidMove(Location from, Location to, Piece[][] board){
-		Location kingLocation = Piece.getPieceAtLocation(from, board).getPlayer()==1?new Location(7,4):new Location(0,3);
-		Location rookLocation = Piece.getPieceAtLocation(from, board).getPlayer()==1?new Location(7,7):new Location(0,0);
-		boolean isCastle = (from.equals(kingLocation) && to.equals(rookLocation)) || (to.equals(kingLocation) && from.equals(rookLocation));
+		Location kingLocation = new Location(7,4, player);
+		Location rookLocation = new Location(7,7, player);
+		
+		boolean isCastle = from.equals(kingLocation) && to.equals(rookLocation);
 		boolean moveValid = !from.equals(to) && isValidMoveSpecific(from, to, board); //Check if the piece can technically move there
 		
 		if(!moveValid)return false; //If they can't move there end of story

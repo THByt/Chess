@@ -180,12 +180,12 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	// Params: Piece[][] board: the playing board, int player: the player to chekc to castle with
 	// Returns: boolean: can that player castle
 	public static boolean canACertainPlayerCastleButItOnlyChecksCertainConditionsBecauseOthersAreCheckedElsewhere(Piece[][] board, int player){
-		Location inbetweenPieceLocation1 = player == 1 ? new Location(7,5):new Location(0,2); 
-		Location inbetweenPieceLocation2 = player == 1 ? new Location(7,6):new Location(0,1); 
+		Location inbetweenPieceLocation1 = new Location(7,5, player);
+		Location inbetweenPieceLocation2 = new Location(7,6, player);
 		boolean squaresInbetweenInAttack = false;
-				
+
 		boolean cantCastle = Piece.getPieceAtLocation(inbetweenPieceLocation1, board) != null ||
-				Piece.getPieceAtLocation(inbetweenPieceLocation2, board) != null;
+				Piece.getPieceAtLocation(inbetweenPieceLocation2, board) != null || isInCheck(player, board);
 		
 		for(int c = 0; c <8; c++){	
 			for (int r = 0; r<8; r++){

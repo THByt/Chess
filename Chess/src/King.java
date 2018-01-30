@@ -11,7 +11,7 @@ public class King extends Piece{
 	//Kings move one space any direction. This means delta y and delta x need to have magnitude less than or equal to 1
 	@Override
 	public boolean isValidMoveSpecific(Location from, Location to, Piece[][] b) {
-		Location rookLocation = player==1?new Location(7,7):new Location(0,0);
+		Location rookLocation = new Location(7,7,player);
 		
 		return (Math.abs(from.getRow()-to.getRow())<=1
 					&&	Math.abs(from.getColumn()-to.getColumn())<=1)

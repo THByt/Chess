@@ -20,6 +20,12 @@ public class Location {
 		column = c;
 	}
 	
+	public Location(int r, int c, int player){
+		row = r;
+		column = c;
+		if(player==2)this.flip();
+	}
+	
 	public int getRow(){
 		return row;
 	}
@@ -38,7 +44,7 @@ public class Location {
 	
 	public void flip(){
 		row = 7-row;
-		column = 7-column;
+		//column = 7-column; CHESS IS NOT ROTATIONALLY SYMETRIC
 	}
 	
 	public boolean equals(Object o){
