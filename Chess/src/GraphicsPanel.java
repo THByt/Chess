@@ -12,23 +12,6 @@
 // add current player variable	
 // implement moving pieces 
 
-/* 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍
- * 😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍😍 
- */
-
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -42,7 +25,7 @@ import javax.swing.JPanel;
 import javazoom.jl.decoder.JavaLayerException;
 
 enum State{
-	START, PLAY, GAMEOVER
+	START, PLAY, GAMEOVER, CHOOSEPIECE
 }
 
 // Class: GraphicsPanel
@@ -60,7 +43,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private int player;						// current player (1 or 2)
 	private State state; 					// Current game state
 	private boolean lastClickTurnSwitch; 	// True if the last click moved a piece. Used to draw "check" until they click again
-	private boolean choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide; //Does the name not say enough?
 	
 	public GraphicsPanel(){
 
@@ -78,10 +60,10 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[0][7] = new Rook(2);
 		
 //		//Black pawns
-//		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
+		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
 //		
 //		//White pawns
-//		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
+		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
 		
 		//White non-pawns
 		board[7][0] = new Rook(1);
@@ -115,8 +97,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
         this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
 		
-		//Set choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide to false
-		choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = false;
 	}
 	
 	
@@ -328,20 +308,19 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						if(board[0][i] != null 
 						&& board[0][i].getPlayer()==1
 						&& board[0][i] instanceof Pawn) {
-							choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = true;
-							board[0][i] = new Queen(1);
+							state = State.CHOOSEPIECE;
 						}
 					}
 					for(int i = 0; i < 8; i++) {
 						if(board[7][i] != null 
 						&& board[7][i].getPlayer()==2
 						&& board[7][i] instanceof Pawn) {
-							choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = true;
-							board[7][i] = new Queen(2);
+							state = State.CHOOSEPIECE;
 						}
 					}
 					
-					choosingThePieceThatWillReplaceThePawnOnceItCrossesToTheOtherSide = false;
+
+					state = State.PLAY;
 			        if(isCheckMate(3-player, board)){//Check if game over
 			          state = State.GAMEOVER;
 			        }else{
@@ -358,6 +337,33 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					selected = false; //unselect it
 				}
 				break;	
+			}
+			
+		case CHOOSEPIECE:
+			
+			switch(player) {
+			case 1:
+				for(int i = 0; i < 8; i++) {
+					if(board[7][i] != null 
+					&& board[7][i].getPlayer()==1
+					&& board[7][i] instanceof Pawn) {
+						board[7][i] = (e.getX() < (SQUARE_WIDTH*8)+2) ? new Knight(2) : new Queen(2);
+					}
+				}
+				state = State.PLAY;
+				break;
+				
+			case 2:
+				for(int i = 0; i < 8; i++) {
+					if(board[0][i] != null 
+					&& board[0][i].getPlayer()==1
+					&& board[0][i] instanceof Pawn) {
+						board[0][i] = (e.getX() < (SQUARE_WIDTH*8)+2) ? new Knight(1) : new Queen(1);
+					}
+				}
+				state = State.PLAY;
+				break;
+				
 			}
 			
 		case GAMEOVER:
