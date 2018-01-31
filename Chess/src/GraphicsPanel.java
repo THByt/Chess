@@ -187,16 +187,21 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	// Params: Location from: location to move piece from. Location to: location to move piece to. Piece[][] board: board of pieces. 
 	// Returns: void
 	public static void movePiece(Location from, Location to, Piece[][] board){
+		int player = Piece.getPieceAtLocation(from, board).getPlayer();
 		Location kingLocation = new Location(7,4);
 		Location rookLocation = new Location(7,7);
 		Location kingLocationAfterMovingIfCastle = new Location(7,6);
 		Location rookLocationAfterMovingIfCastle = new Location(7,5);
 		
-		if(Piece.getPieceAtLocation(from, board).getPlayer()==2){
+		if(player==2){
 			kingLocation.flip();
 			rookLocation.flip();
 			kingLocationAfterMovingIfCastle.flip();
 			rookLocationAfterMovingIfCastle.flip();
+		}
+		
+		if(Piece.getPieceAtLocation(to, board)!=null && Piece.getPieceAtLocation(to, board).getPlayer()!=player){
+			SoundEffects.EXPLOSION.play();
 		}
 		
 		boolean isCastle = from.equals(kingLocation) && to.equals(rookLocation);
@@ -282,6 +287,10 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		}
 	}
 
+	//Method: mouseClicked
+	//Description: 
+	//Params:
+	//Returns: 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		lastClickTurnSwitch = false;

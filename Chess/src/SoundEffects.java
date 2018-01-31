@@ -14,7 +14,8 @@ import src.main.java.com.adonax.audiocue.AudioCue;
 // Date: Dec 5, 2017
 // Description: Holds a specifc sound and has a method for playing it
 public enum SoundEffects {
-	ERROR("sounds/error.wav");
+	ERROR("sounds/error.wav"),
+	EXPLOSION("sounds/explosion.wav");
 	
 	private AudioCue myAudioCue;	// Each sound effect gets it's own clip
 	private int handle;
