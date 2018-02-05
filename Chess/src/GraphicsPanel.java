@@ -46,9 +46,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private static Move lastMove;					// The last move made. For visualization purposes.
 	
 	public GraphicsPanel(){
-		for(int i = 0; i<10; i++){
-			System.out.println(Emoji.generateEmoji());
-		}
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 
