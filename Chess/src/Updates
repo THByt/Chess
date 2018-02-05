@@ -26,3 +26,7 @@ Add SoundEffects.java
 
 Emoji.java:
 Add Emoji.java
+
+Location.java:
+Add flip method. Flip flips the row and column to be the coordinates of the associated square of the other color
+Add constructor with third parameter, player. If player == 2, flips the location when creating. 
