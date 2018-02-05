@@ -46,6 +46,9 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private static Move lastMove;					// The last move made. For visualization purposes.
 	
 	public GraphicsPanel(){
+		for(int i = 0; i<100; i++){
+			System.out.println(Emoji.generateEmoji());
+		}
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+2,SQUARE_WIDTH*8+2));
 		board = new Piece[8][8];	//Initialize board
 
@@ -251,10 +254,12 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		}
 		
 		//Draw the last move
-		g2.setColor(new Color(150,150,255)); 
-		g2.fillOval(lastMove.getFrom().getColumn()*SQUARE_WIDTH+10,lastMove.getFrom().getRow()*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
-		g2.fillOval(lastMove.getTo().getColumn()*SQUARE_WIDTH+10,lastMove.getTo().getRow()*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
-				
+		if(lastClickTurnSwitch){
+			g2.setColor(new Color(150,150,255)); 
+			g2.fillOval(lastMove.getFrom().getColumn()*SQUARE_WIDTH+10,lastMove.getFrom().getRow()*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
+			g2.fillOval(lastMove.getTo().getColumn()*SQUARE_WIDTH+10,lastMove.getTo().getRow()*SQUARE_WIDTH+10,SQUARE_WIDTH-20,SQUARE_WIDTH-20);
+		}	
+		
 		if(selected){
 			for(int c = 0; c <8; c++){
 				for (int r = 0; r<8; r++){
