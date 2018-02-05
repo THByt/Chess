@@ -1,1 +1,28 @@
 This file documents changes made to our design
+The entries in this document are not in chronological order because we wrote this when we were done programming, instead of during.
+
+GraphicsPanel.java:
+Add a State enum to keep track of what is going on. States are: START, PLAY, GAMEOVER, CHOOSEPIECE
+Add lastClickTurnSwitch boolean to keep track if the player moved on the last mouse click. Used to draw things until users click again, such as "CHECK"
+Add lastMove variable to keep track of last move and draw it so people don't ask "where'd ya go?"
+Add background music
+Add error noise when clicking invalid location
+Add explosion noise when taking piece
+Add check checking to say when a player is in check
+Don't let a player move into a position where they are in check
+When checkmate occurs, draw "PLAYER [player] wins!"
+Add castling
+Add piece selection process to change pawns into pieces
+
+Piece.java:
+Add moved instance variable to keep track of whether the piece had been moved
+Add abstract isValidMoveSpecific() method. This method checks the things that are not specific to all pieces,
+such as not moving to your own square, and not moving onto a piece of your color. 
+Those things are OR'd with the isValidMoveSpecific in the Piece's isValidMove() method
+Change draw() method to center the piece in its square
+
+SoundEffects.java:
+Add SoundEffects.java
+
+Emoji.java:
+Add Emoji.java
