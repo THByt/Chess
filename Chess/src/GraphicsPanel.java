@@ -293,6 +293,13 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			drawCenteredText(g2, "PLAYER " + player, SQUARE_WIDTH*4-60, 140, color);
 			drawCenteredText(g2, "WINS!", SQUARE_WIDTH*4+60, 140, color);
 			break;
+			
+		case CHOOSEPIECE:
+			g2.translate(3*SQUARE_WIDTH, 4*SQUARE_WIDTH);
+			g2.scale(2, 2);
+			new Queen(3,"images2/queen3").draw(g2, c, new Location());
+			g2.scale(0.5, 0.5);
+			g2.translate(-3*SQUARE_WIDTH, -4*SQUARE_WIDTH);
 		}
 	}
 
