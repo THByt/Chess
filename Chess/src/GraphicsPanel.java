@@ -297,11 +297,19 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			break;
 			
 		case CHOOSEPIECE:
-			g2.translate(3*SQUARE_WIDTH, 4*SQUARE_WIDTH);
-			g2.scale(2, 2);
-			new Queen(3,"images2/queen3").draw(g2, c, new Location());
-			g2.scale(0.5, 0.5);
-			g2.translate(-3*SQUARE_WIDTH, -4*SQUARE_WIDTH);
+			
+			//Print green pieces for selection
+//			g2.translate(5*SQUARE_WIDTH, 4*SQUARE_WIDTH);
+//			//g2.scale(2, 2);
+			new Queen(3).draw(g2, this, new Location());
+//			//g2.scale(0.5, 0.5);
+//			g2.translate(-5*SQUARE_WIDTH, -4*SQUARE_WIDTH);
+//			
+//			g2.translate(3*SQUARE_WIDTH, 4*SQUARE_WIDTH);
+//			//g2.scale(2, 2);
+//			//new Knight(3).draw(g2, this, new Location());
+//			//g2.scale(0.5, 0.5);
+//			g2.translate(-3*SQUARE_WIDTH, -4*SQUARE_WIDTH);
 		}
 	}
 
@@ -373,7 +381,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					if(board[7][i] != null 
 					&& board[7][i].getPlayer()==1
 					&& board[7][i] instanceof Pawn) {
-						board[7][i] = (e.getX() < (SQUARE_WIDTH*8)+2) ? new Knight(2) : new Queen(2);
+						board[7][i] = (e.getX() < (SQUARE_WIDTH*4)+2) ? new Knight(2) : new Queen(2);
 					}
 				}
 				state = State.PLAY;
@@ -384,7 +392,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					if(board[0][i] != null 
 					&& board[0][i].getPlayer()==1
 					&& board[0][i] instanceof Pawn) {
-						board[0][i] = (e.getX() < (SQUARE_WIDTH*8)+2) ? new Knight(1) : new Queen(1);
+						board[0][i] = (e.getX() < (SQUARE_WIDTH*4)+2) ? new Knight(1) : new Queen(1);
 					}
 				}
 				state = State.PLAY;
