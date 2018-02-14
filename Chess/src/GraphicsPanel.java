@@ -65,7 +65,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 //		
 //		//White pawns
 		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
-		board[1][6] = new Pawn(1);
 		
 		//White non-pawns
 		board[7][0] = new Rook(1);
@@ -282,6 +281,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		}
 		
 		//Draw different stuff depending on state
+		System.out.println(state);
 		switch(state){
 		case START:
 			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 240, Color.BLACK);
@@ -346,6 +346,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						if(board[0][i] != null 
 						&& board[0][i].getPlayer()==1
 						&& board[0][i] instanceof Pawn) {
+							System.out.println("THis rm");
 							state = State.CHOOSEPIECE;
 						}
 					}
@@ -357,8 +358,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						}
 					}
 					
-
-					state = State.PLAY;
+					if(state != State.CHOOSEPIECE)
+						state = State.PLAY;
 			        if(isCheckMate(3-player, board)){//Check if game over
 			          state = State.GAMEOVER;
 			        }else{
@@ -383,7 +384,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			case 1:
 				for(int i = 0; i < 8; i++) {
 					if(board[7][i] != null 
-					&& board[7][i].getPlayer()==1
+					&& board[7][i].getPlayer()==2
 					&& board[7][i] instanceof Pawn) {
 						board[7][i] = (e.getX() < (SQUARE_WIDTH*4)+2) ? new Knight(2) : new Queen(2);
 					}
