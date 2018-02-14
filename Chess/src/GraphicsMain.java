@@ -1,9 +1,10 @@
-import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GraphicsMain extends JFrame{
 	
+	private static final long serialVersionUID = 5637739624068832487L;
+
 	public static void main(String[] args){
 		GraphicsMain window = new GraphicsMain();
 	    JPanel p = new JPanel();
