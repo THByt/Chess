@@ -12,6 +12,7 @@
 // add current player variable	
 // implement moving pieces 
 
+import static java.lang.System.*;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -58,12 +59,13 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		board[0][5] = new Bishop(2);
 		board[0][6] = new Knight(2);
 		board[0][7] = new Rook(2);
-		
+	
 //		//Black pawns
 		for(int i = 0; i < 8; i++) board[1][i] = new Pawn(2);
 //		
 //		//White pawns
 		for(int i = 0; i < 8; i++) board[6][i] = new Pawn(1);
+		board[1][6] = new Pawn(1);
 		
 		//White non-pawns
 		board[7][0] = new Rook(1);
@@ -299,17 +301,19 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		case CHOOSEPIECE:
 			
 			//Print green pieces for selection
-//			g2.translate(5*SQUARE_WIDTH, 4*SQUARE_WIDTH);
-//			//g2.scale(2, 2);
+			g2.translate(5*SQUARE_WIDTH, 3*SQUARE_WIDTH);
+			g2.scale(2, 2);
+			out.println("IS RUNIN");
 			new Queen(3).draw(g2, this, new Location());
-//			//g2.scale(0.5, 0.5);
-//			g2.translate(-5*SQUARE_WIDTH, -4*SQUARE_WIDTH);
-//			
-//			g2.translate(3*SQUARE_WIDTH, 4*SQUARE_WIDTH);
-//			//g2.scale(2, 2);
-//			//new Knight(3).draw(g2, this, new Location());
-//			//g2.scale(0.5, 0.5);
-//			g2.translate(-3*SQUARE_WIDTH, -4*SQUARE_WIDTH);
+			g2.scale(0.5, 0.5);
+			g2.translate(-5*SQUARE_WIDTH, -3*SQUARE_WIDTH);
+			
+			g2.translate(1*SQUARE_WIDTH, 3*SQUARE_WIDTH);
+			g2.scale(2, 2);
+			new Knight(3).draw(g2, this, new Location());
+			g2.scale(0.5, 0.5);
+			g2.translate(-1*SQUARE_WIDTH, -3*SQUARE_WIDTH);
+			break;
 		}
 	}
 
