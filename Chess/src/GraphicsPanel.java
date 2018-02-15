@@ -281,7 +281,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		}
 		
 		//Draw different stuff depending on state
-		System.out.println(state);
 		switch(state){
 		case START:
 			drawCenteredText(g2, "CHESS", SQUARE_WIDTH*4-20, 240, Color.BLACK);
@@ -303,7 +302,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			//Print green pieces for selection
 			g2.translate(5*SQUARE_WIDTH, 3*SQUARE_WIDTH);
 			g2.scale(2, 2);
-			out.println("IS RUNIN");
 			new Queen(3).draw(g2, this, new Location());
 			g2.scale(0.5, 0.5);
 			g2.translate(-5*SQUARE_WIDTH, -3*SQUARE_WIDTH);
@@ -346,7 +344,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						if(board[0][i] != null 
 						&& board[0][i].getPlayer()==1
 						&& board[0][i] instanceof Pawn) {
-							System.out.println("THis rm");
 							state = State.CHOOSEPIECE;
 						}
 					}
